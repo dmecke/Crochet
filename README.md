@@ -4,7 +4,7 @@
 YarnScribbler is a modifier version of [YarnEditor](https://github.com/YarnSpinnerTool/YarnEditor) meant to be used with JujuAdam's [Scribble](https://github.com/JujuAdams/Scribble) and [Chatterbox](https://github.com/JujuAdams/chatterbox) libraries for GameMaker Studio 2.3+. It strips away unnecessary features from YarnEditor and implements Scribble's own brand of markup to make the Yarn -> Chatterbox -> Scribble pipeline more efficient and fun.
 
 # Scribble Markup
-YarnScribbler supports auto close tags for a variety of [Scribble text formatting](https://github.com/JujuAdams/Scribble/wiki/Text-Formatting). Below is a table of tags that will autocomplete if you type the starting phrase.
+YarnScribbler supports auto close tags for a variety of [Scribble text formatting options](https://github.com/JujuAdams/Scribble/wiki/Text-Formatting). Below is a table of tags that will autocomplete if you type the starting phrase.
 
 Formatting Option | Starting Phrase | Autocompleted Phrase &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Notes
 ----------------- | ------------- | ---------------------------------------------------------------------------------------- | -----
