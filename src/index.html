@@ -112,16 +112,6 @@
             <span class="hide-when-narrow">&nbsp;</span>
             Save as Yarn
           </span>
-          <span class="item" data-bind="click: function() { app.data.trySave('twee'); }">
-            <img style="margin:0; padding:0" width="20px" src="./public/images/twine-favicon-152.png" alt="Twine Icon" />
-            <span class="hide-when-narrow">&nbsp;</span>
-            Save as Twee
-          </span>
-          <span class="item" data-bind="click: function() { app.data.trySave('tw2'); }">
-            <img style="margin:0; padding:0" width="20px" src="./public/images/twine-favicon-152.png" alt="Twine Icon" />
-            <span class="hide-when-narrow">&nbsp;</span>
-            Save as Twee2
-          </span>
           <span class="item" data-bind="click: function() { app.data.trySave('xml'); }">
             <svg class="icon menu-icon icon-document-file-xml icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-document-file-xml"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
@@ -192,35 +182,50 @@
           <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
           <span class="hide-when-narrow">&nbsp;</span>
-          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('b')" title="Bold">
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('b')" title="Bold (Bold font must be defined in Scribble)">
             <svg class="icon icon-bold icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-bold"></use></svg>
           </button>
-          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('i')" title="Italic">
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('i')" title="Italic (Use [slant] instead if italic font is undefined in Scribble.)">
             <svg class="icon icon-italic icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-italic"></use></svg>
           </button>
-          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('u')" title="Underlined">
-            <svg class="icon icon-underline icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-underline"></use></svg>
+          <span class="hide-when-narrow">&nbsp;</span>
+          <span class="hide-when-narrow bbcode-button-separator">||</span>
+          <span class="hide-when-narrow">&nbsp;</span>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_left')" title="Align Left">
+            <svg class="icon icon-align-left icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-left"></use></svg>
+          </button>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_center')" title="Align Center">
+            <svg class="icon icon-align-center icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-center"></use></svg>
+          </button>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_right')" title="Align Right">
+            <svg class="icon icon-align-right icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-right"></use></svg>
           </button>
           <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
           <span class="hide-when-narrow">&nbsp;</span>
-          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('cmd')" title="Command">
-            <svg class="icon icon-angle-double-left icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-angle-double-left"></use></svg>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_top')" title="Align Top">
+            <svg class="icon icon-align-top icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-top"></use></svg>
           </button>
-          <button class="bbcode-button hide-when-narrow" onclick="app.richTextFormatter.insertTag('opt')" title="Choice/Link">
-            <svg class="icon icon-link icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-link"></use></svg>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_middle')" title="Align Middle">
+            <svg class="icon icon-align-middle icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-middle"></use></svg>
+          </button>
+          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('fa_bottom')" title="Align Bottom">
+            <svg class="icon icon-align-bottom icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-align-bottom"></use></svg>
           </button>
           <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
           <span class="hide-when-narrow">&nbsp;</span>
-          <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('img')" title="Image">
-            <svg class="icon icon-image icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-image"></use></svg>
+          <button class="bbcode-button" onclick="app.richTextFormatter.openPinOptions()" title="Pin Options">
+            <svg class="icon icon-pin icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-pin"></use></svg>
+          </button>
+          <span class="hide-when-narrow">&nbsp;</span>
+          <span class="hide-when-narrow bbcode-button-separator">||</span>
+          <span class="hide-when-narrow">&nbsp;</span>
+          <button class="bbcode-button" onclick="app.richTextFormatter.openEffectOptions()" title="Insert Effect">
+            <svg class="icon icon-magic icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-magic"></use></svg>
           </button>
           <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('color')" title="Color Picker">
             <svg class="icon icon-palette icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-palette"></use></svg>
-          </button>
-          <button class="bbcode-button hide-when-narrow" onclick="app.insertEmoji()" title="Emoji">
-            <svg class="icon icon-sweat-emoji icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-sweat-emoji"></use></svg>
           </button>
 
           <!-- ko if:app.usingVisualStudioCodeExtension() -->
@@ -360,7 +365,7 @@
       <span class="app-version" data-bind="text:app.version"></span>
       <span class="file-name" data-bind="text:data.editingName"></span>
     </div>
-    <div class="title" id="addPwa">🍰Add to Homescreen📲</div>
+    <div class="title" id="addPwa">Install App</div>
 
     <!-- marquee -->
     <div id="marquee"></div>
@@ -394,22 +399,6 @@
                 value: app.settings.theme,
                 event: { change: app.setTheme }">
               </select>
-            </div>
-
-            <!-- Markup -->
-            <div class="settings-item">
-              <label class="settings-label" for="theme">Markup</label>
-
-              <div class="settings-value markup">
-                <select id="theme" data-bind="
-                  options: app.ui.availableMarkupLanguages,
-                  optionsText: 'name',
-                  optionsValue: 'id',
-                  value: app.settings.markupLanguage,
-                  event: { change: app.setMarkupLanguage }">
-                </select>
-                <button data-bind="click: app.ui.confirmMarkupConversion">Convert</button>
-              </div>
             </div>
 
             <!-- Story playtesting style -->

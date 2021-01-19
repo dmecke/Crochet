@@ -9,8 +9,7 @@ export const UI = function(app) {
 
   // Markup selector -----------------------------------------------------------
   this.availableMarkupLanguages = [
-    { id: 'bbcode', name: 'Bbcode' },
-    { id: 'html', name: 'Html' }
+    { id: 'scribble', name: "Scribble"}
   ];
 
   // Theme selector -----------------------------------------------------------

@@ -138,7 +138,7 @@ export const Settings = function(app) {
 
   // Markup language
   this.markupLanguage = ko
-    .observable(storage.getItem('markupLanguage') || 'bbcode')
+    .observable(storage.getItem('markupLanguage') || 'scribble')
     .extend({ persist:'markupLanguage' });
 
   // Playtest style

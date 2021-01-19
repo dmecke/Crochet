@@ -269,6 +269,7 @@ export var App = function(name, version) {
       const selectRange = JSON.parse(
         JSON.stringify(self.editor.selection.getRange())
       );
+      console.log(selectRange);
       self.editor.selection.setRange(selectRange);
       const colorCode = color.toHexString().replace('#', '');
       self.editor.session.replace(selectRange, colorCode);
@@ -1246,6 +1247,7 @@ export var App = function(name, version) {
       //close any pop up helpers tooltip class
       if ($('#colorPicker-container').is(':visible')) {
         $('#colorPicker-container').hide();
+        self.moveEditCursor(7);
       }
       if ($('#emojiPicker-container').is(':visible')) {
         $('#emojiPicker-container').hide();

@@ -1,10 +1,7 @@
 import { BbcodeRichTextFormatter } from './richTextFormatterBbcode';
 import { HtmlRichTextFormatter } from './richTextFormatterHtml';
+import { ScribbleRichTextFormatter } from './richTextFormatterScribble';
 
 export const RichTextFormatter = function(app) {
-  const type = app.settings.markupLanguage();
-
-  return type === 'html' ?
-    new HtmlRichTextFormatter(app) :
-    new BbcodeRichTextFormatter(app);
+  return new ScribbleRichTextFormatter(app);
 };

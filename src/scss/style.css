@@ -1054,6 +1054,7 @@ input:focus + span + .dropdown {
   left: 15px;
   bottom: 60px;
   color: #6b3877;
+  cursor: pointer;
 }
 
 .app-info span {
