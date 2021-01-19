@@ -1,10 +1,10 @@
 {
-  "name": "yarn-editor",
+  "name": "yarn-scribbler",
   "main": "main.js",
   "version": "0.4.118",
   "license": "MIT",
   "author": " @infinite_ammo, @seiyria, @beeglebug ,Todor Imreorov, @FaultyFunctions",
-  "description": "Dialogue editor created for \"Night in the Woods\" (and other projects) by @NoelFB and @infinite_ammo with contributions from @seiyria and @beeglebug. It is heavily inspired by and based on the amazing Twine software: http://twinery.org/. This version has been ported over to Electron and extended with further functionality by Todor Imreorov. Scribble Edition functionality provided by Faulty.",
+  "description": "Dialogue editor created for \"Night in the Woods\" (and other projects) by @NoelFB and @infinite_ammo with contributions from @seiyria and @beeglebug. It is heavily inspired by and based on the amazing Twine software: http://twinery.org/. This version has been ported over to Electron and extended with further functionality by Todor Imreorov. Scribble functionality provided by Faulty.",
   "homepage": "https://github.com/YarnSpinnerTool/YarnEditor#readme",
   "repository": {
     "type": "git",
@@ -40,6 +40,6 @@
     ]
   },
   "build": {
-    "productName": "Yarn Editor: Scribble Edition"
+    "productName": "Yarn Scribbler"
   }
 }

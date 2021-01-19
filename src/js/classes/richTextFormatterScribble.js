@@ -6,6 +6,7 @@ export const ScribbleRichTextFormatter = function(app) {
     { Start: '<<', Completion: '>>', Offset: -2 },
     { Start: '[#', Completion: '][/c]', Offset: -5, BehaviorCompletion: '][/c', Func: () => { app.insertColorCode(); } },
     { Start: '[b', Completion: '][/]', BehaviorCompletion: '][/', Offset: -3 },
+    { Start: '[bi', Completion: '][/]', BehaviorCompletion: '][/', Offset: -3 },
     { Start: '[i', Completion: '][/]', BehaviorCompletion: '][/', Offset: -3 },
     { Start: '[u', Completion: '][/]', BehaviorCompletion: '][/', Offset: -3 },
     { Start: '[slant', Completion: '][/slant]', BehaviorCompletion: '][/slant', Offset: -8 },

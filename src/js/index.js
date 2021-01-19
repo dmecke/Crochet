@@ -43,5 +43,5 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-window.app = new App('Yarn Editor: Scribble Edition', version);
+window.app = new App('Yarn Scribbler', version);
 window.app.run();
