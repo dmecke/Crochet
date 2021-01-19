@@ -40,6 +40,6 @@
     ]
   },
   "build": {
-    "productName": "Yarn Scribbler"
+    "productName": "YarnScribbler"
   }
 }
