@@ -76,6 +76,7 @@ export const ScribbleRichTextFormatter = function(app) {
     case 'cmd': return '>>';
     case 'opt': return '|]]';
     case 'color': return '[/c]';
+    case 'cycle': return '[/cycle]';
     default: return `[/]`;
     };
   };
