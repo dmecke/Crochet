@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/YarnSpinnerTool/YarnEditor/issues"
   },
-  "version": "0.1.0-ALPHA2",
+  "version": "0.1.1-ALPHA",
   "scripts": {
     "build": "npm run copy-version && webpack -p --progress --mode production --config webpack.config.js",
     "build-dev": "npm run copy-version && cross-env NODE_ENV=dev webpack -p --progress --config webpack.config.js",
