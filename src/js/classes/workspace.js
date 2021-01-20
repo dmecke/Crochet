@@ -49,7 +49,7 @@ export const Workspace = function(app) {
   // Sets the redraw throttle
   this.setThrottle = function(value, e) {
     const throttle = e ? e.target.value : value;
-    self.updateArrowsThrottle = Utils.clamp(throttle, 16, 250);
+    self.updateArrowsThrottle = Utils.clamp(throttle, 0, 250);
   };
 
   // setTranslation
