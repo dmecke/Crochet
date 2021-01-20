@@ -84,15 +84,14 @@ export const Workspace = function(app) {
       .transition(
         {
           transform:
-            'matrix3d(' +
+            'matrix(' +
             self.scale +
-            ',0,0,0,0,' +
+            ',0,0,' +
             self.scale +
-            ',0,0,0,0,1,0,' +
+            ',' +
             self.transform.x +
             ',' +
             self.transform.y +
-            ',0,1' +
             ')',
         },
         speed || 0,
