@@ -40,6 +40,15 @@
     ]
   },
   "build": {
+    "fileAssociations": {
+      "ext": "yarn",
+      "name": "Yarn File",
+      "role": "editor"
+    },
+    "win": {
+      "target": "msi",
+      "icon": "build/icon.ico"
+    }
     "productName": "YarnScribbler"
   }
 }
