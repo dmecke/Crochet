@@ -48,7 +48,7 @@
     "win": {
       "target": "msi",
       "icon": "build/icon.ico"
-    }
+    },
     "productName": "YarnScribbler"
   }
 }
