@@ -30,8 +30,8 @@ export var App = function(name, version) {
 
   this.setTheme = function(name, e) {
     let themeName = e ? e.target.value : name;
-    setTimeout(self.initGrid, 35);
-    setTimeout(self.workspace.updateArrows, 35);
+    setTimeout(self.initGrid, 50);
+    setTimeout(self.workspace.updateArrows, 50);
     $('#theme-stylesheet').attr('href', Utils.getPublicPath(`themes/${themeName}.css`));
   };
 
@@ -102,6 +102,7 @@ export var App = function(name, version) {
     },
     onDragEnd: function() {
       self.editor.resize();
+      self.settings.editorSplitSize($('#editor-form').width());
     }
   }
 
@@ -222,7 +223,7 @@ export var App = function(name, version) {
       self.workspace.updateArrows();
       self.initGrid();
     });
-    self.initGrid();
+    setTimeout(self.initGrid, 50);
 
     this.guessPopUpHelper = function() {
       if (/color=#([a-zA-Z0-9]{3,6})$/.test(self.getTagBeforeCursor())) {
@@ -838,15 +839,28 @@ export var App = function(name, version) {
     // autocompletion
     let autoCompleteTimeout = undefined;
     self.editor.getSession().on('change', function(evt) {
-      const autoComplete = $('#toglAutocomplete').prop('checked');
+      const autoComplete = self.settings.autoCloseTags();
       if (evt.action === 'insert' && autoComplete) {
+        if (self.richTextFormatter.justInsertedAutoComplete) {
+          self.richTextFormatter.justInsertedAutoComplete = false;
+          return;
+        }
         autoCompleteTimeout && clearTimeout (autoCompleteTimeout);
         autoCompleteTimeout = setTimeout(() => {
           autoCompleteTimeout = undefined;
           self.richTextFormatter.completableTags.forEach( tag => {
             if (self.getTagBeforeCursor() === tag.Start) {
-              tag.Completion && self.insertTextAtCursor(tag.Completion);
-              tag.Offset && self.moveEditCursor(tag.Offset);
+              self.richTextFormatter.justInsertedAutoComplete = true;
+              let insertedText = tag.Completion;
+              let offset = tag.Offset;
+              if (self.settings.autoCloseBrackets()) {
+                if (tag.BehaviorCompletion) {
+                  insertedText = tag.BehaviorCompletion;
+                  offset += 1;
+                }
+              }
+              tag.Completion && self.insertTextAtCursor(insertedText);
+              tag.Offset && self.moveEditCursor(offset);
               tag.Func && tag.Func();
             }
           });
@@ -870,10 +884,10 @@ export var App = function(name, version) {
     self.toggleTranscribing();
     self.toggleInvertColors();
     self.toggleShowCounter();
-    self.toggleWordCompletion();
     self.toggleSpellCheck();
     self.validateTitle(); // warn if title already exists
     self.updateEditorStats();
+    self.updateEditorOptions();
 
     if (self.$searchField.val().length > 0 && $('.search-body input').is(':checked')){
       self.editor.findAll(self.$searchField.val());
@@ -881,6 +895,7 @@ export var App = function(name, version) {
 
     if (self.settings.editorSplit()) {
       self.splitEditor();
+      self.workspace.warpToNodeByIdx(node.index() - 1);
     }
 
     if (self.settings.editorSplitDirection() === "right") {
@@ -916,7 +931,7 @@ export var App = function(name, version) {
 
     // Editor Classes
     $('#editor-form')
-    .width('50%')
+    .width(self.settings.editorSplitSize())
     .addClass('split-editor')
     .toggleClass('split-editor-right', self.settings.editorSplitDirection() === 'right')
     .resizable(self.editorResizeHandleOptions);
@@ -973,7 +988,8 @@ export var App = function(name, version) {
 
   this.getSplitEditorXOffset = function() {
     let splitEditorXOffset = 0;
-    if (self.settings.editorSplit()) {
+
+    if (self.inEditor() && self.settings.editorSplit()) {
       splitEditorXOffset = ($('#editor-form').width() / 2);
       
       if (self.settings.editorSplitDirection() === 'right') { splitEditorXOffset *= -1; }
@@ -1132,19 +1148,21 @@ export var App = function(name, version) {
     }
   };
 
-  this.toggleWordCompletion = function() {
+  this.toggleAutocompleteSuggestions = function() {
+    self.settings.autocompleteSuggestionsEnabled(!self.settings.autocompleteSuggestionsEnabled());
     self.updateEditorOptions();
   };
 
-  this.toggleClosingCharactersCompletion = function() {
+  this.toggleAutoCloseBrackets = function() {
+    self.settings.autoCloseBrackets(!self.settings.autoCloseBrackets());
     self.updateEditorOptions();
   };
 
   this.updateEditorOptions = function() {
     self.editor.setOptions({
-      enableBasicAutocompletion: app.settings.completeWordsEnabled(),
-      enableLiveAutocompletion: app.settings.completeWordsEnabled(),
-      behavioursEnabled: app.settings.completeClosingCharacters(),
+      enableBasicAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
+      enableLiveAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
+      behavioursEnabled: app.settings.autoCloseBrackets(),
     });
   }
 
