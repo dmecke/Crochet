@@ -118,6 +118,14 @@ export const UI = function(app) {
     return self.settingsDialogVisible() || (Swal.isVisible() && !Swal.isTimerRunning());
   };
 
+  this.setEditorFontSize = function() {
+    if (app.editor !== null) {
+      app.editor.setOptions({
+        fontSize: app.settings.editorFontSize()
+      });
+    }
+  }
+
   // confirmMarkupConversion
   this.confirmMarkupConversion = function () {
     Swal.fire({
