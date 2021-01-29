@@ -41,6 +41,15 @@
     ]
   },
   "build": {
-    "productName": "Crochet"
+    "productName": "Crochet",
+    "fileAssociations": {
+      "ext": "yarn",
+      "name": "Yarn File",
+      "role": "editor"
+    },
+    "win": {
+      "target": "msi",
+      "icon": "build/icon.ico"
+    }
   }
 }
