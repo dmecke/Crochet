@@ -22,6 +22,7 @@
     "build-mac": "npm run build-web-app && electron-builder --macos"
   },
   "dependencies": {
+    "dot-prop": "^4.2.1",
     "electron-is": "^3.0.0"
   },
   "devDependencies": {
