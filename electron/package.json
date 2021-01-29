@@ -47,8 +47,8 @@
       "role": "editor"
     },
     "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
+      "target": "msi",
+      "icon": "build/icon.png"
     },
     "productName": "YarnScribbler"
   }
