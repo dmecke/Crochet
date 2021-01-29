@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <link rel="manifest" href="./manifest.json">
-  <title>Yarn</title>
+  <title>Crochet</title>
 </head>
 
 <body>
@@ -250,14 +250,14 @@
             <span class="hide-when-narrow bbcode-button-separator bbcode-button-separator-float-right">||</span>
             <span class="hide-when-narrow float-right">&nbsp;</span>
           </span>
-          <button id="storyPlayButton" class="bbcode-button bbcode-button-right" onclick="app.togglePlayMode(true)" title="Preview"><svg class="icon icon-play icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-play"></use></svg></button>
+          <!-- <button id="storyPlayButton" class="bbcode-button bbcode-button-right" onclick="app.togglePlayMode(true)" title="Preview"><svg class="icon icon-play icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-play"></use></svg></button> -->
+          <button id="split-editor-button" class="bbcode-button bbcode-button-right hide-when-narrow" onclick="app.toggleEditorView()" title="Split View">
+            <svg class="icon icon-columns icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-columns"></use></svg> 
+          </button> 
           <span class="hide-when-narrow float-right">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator bbcode-button-separator-float-right">||</span>
           <span class="hide-when-narrow float-right">&nbsp;</span>
           <button class="bbcode-button bbcode-button-right" onclick="app.searchTextInEditor()" title="Search (Ctrl+f)"><svg class="icon icon-search icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-search"></use></svg></button>
-          <button id="split-editor-button" class="bbcode-button bbcode-button-right hide-when-narrow" onclick="app.toggleEditorView()" title="Split View">
-            <svg class="icon icon-columns icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-columns"></use></svg> 
-          </button> 
           <span class="hide-when-narrow float-right">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator bbcode-button-separator-float-right">||</span>
           <span class="hide-when-narrow float-right">&nbsp;</span>
@@ -360,7 +360,7 @@
       <span class="app-version" data-bind="text:app.version"></span>
       <span class="file-name" data-bind="text:data.editingName"></span>
     </div>
-    <div class="title" id="addPwa">🍰Add to Homescreen📲</div>
+    <div class="title" id="addPwa">Add to Homescreen</div>
 
     <!-- marquee -->
     <div id="marquee"></div>
@@ -413,7 +413,7 @@
             </div>
 
             <!-- Story playtesting style -->
-            <div class="settings-item">
+            <!-- <div class="settings-item">
               <label class="settings-label" for="theme">Playtesting Style</label>
               <div class="settings-value markup">
                 <select id="theme" data-bind="
@@ -424,7 +424,7 @@
                   event: { change: app.setPlaytestStyle }">
                 </select>
               </div>
-            </div>
+            </div> -->
 
             <!-- Throttle delay -->
             <div class="settings-item">

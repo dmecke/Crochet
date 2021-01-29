@@ -1,23 +1,21 @@
-# Contributing to Yarn
+# Contributing to Crochet
 
 Hi there! We're thrilled that you'd like to contribute to this project. Your help is essential for keeping it great.
 
 ## How to send in your contributions
 
-There are many ways you can send your contributions to Yarn. You can either **report a bug**, or you can make the changes yourself and **submit a pull request**!
+There are many ways you can send your contributions to Crochet. You can either **report a bug**, or you can make the changes yourself and **submit a pull request**!
 
 ### Reporting bugs and opening issues
 
-Please [report bugs](https://github.com/infiniteammoinc/Yarn/issues) and open issues generously. Don't be afraid that your idea is silly, or you're reporting a duplicate. We're happy to hear from you. Seriously.
-
-> ***Please Note:*** Yarn is written by volunteers. If you encounter a problem while using it, we'll do our best to help you, but the authors cannot offer any support.
+Please [report bugs](https://github.com/FaultyFunctions/Crochet/issues) and open issues generously. Don't be afraid that your idea is silly, or you're reporting a duplicate. We're happy to hear from you. Seriously.
 
 ### Submitting a pull request
 
-* [Fork](https://github.com/infiniteammoinc/Yarn/fork) and clone the repository
+* [Fork](https://github.com/FaultyFunctions/Crochet/fork) and clone the repository
 * Create a new branch: git checkout -b my-branch-name
 * Make your changes
-* Push to your fork and [submit a pull request](https://github.com/infiniteammoinc/Yarn/compare)
+* Push to your fork and [submit a pull request](https://github.com/FaultyFunctions/Crochet/compare)
 * Pat your self on the back and wait for your pull request to be reviewed.
 
 If you're unfamiliar with how pull requests work, [GitHub's documentation on them](https://help.github.com/articles/using-pull-requests/) is very good.
@@ -30,4 +28,4 @@ Here are a few things you can do that will increase the likelihood of your pull 
 
 ### Code and other contributions
 
-Contributions to Yarn (via pull request or otherwise) must be licensed under the MIT license.
+Contributions to Crochet (via pull request or otherwise) must be licensed under the MIT license.

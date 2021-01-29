@@ -1,17 +1,17 @@
 {
-  "name": "yarn-editor-web",
-  "description": "Dialogue editor created for \"Night in the Woods\" (and other projects) by @NoelFB and @infinite_ammo with contributions from @seiyria and @beeglebug. It is heavily inspired by and based on the amazing Twine software: http://twinery.org/. This version has been ported over to Electron and extended with further functionality by Todor Imreorov",
+  "name": "crochet",
+  "description": "An editor for Yarn files. Forked from YarnEditor.",
   "license": "MIT",
-  "author": "@infinite_ammo, @seiyria, @beeglebug ,Todor Imreorov",
-  "homepage": "https://github.com/YarnSpinnerTool/YarnEditor#readme",
+  "author": "@FaultyFunctions",
+  "homepage": "https://github.com/FaultyFunctions/Crochet",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YarnSpinnerTool/YarnEditor.git"
+    "url": "git+https://github.com/FaultyFunctions/Crochet.git"
   },
   "bugs": {
-    "url": "https://github.com/YarnSpinnerTool/YarnEditor/issues"
+    "url": "https://github.com/FaultyFunctions/Crochet/issues"
   },
-  "version": "0.4.121",
+  "version": "0.1.2",
   "scripts": {
     "build": "npm run copy-version && webpack -p --progress --mode production --config webpack.config.js",
     "build-dev": "npm run copy-version && cross-env NODE_ENV=dev webpack -p --progress --config webpack.config.js",
