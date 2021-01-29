@@ -102,6 +102,40 @@
             Save
           </span>
           <!-- /ko -->
+          <span id="gistTryOpen" class="item" data-bind="click: function() { app.data.tryOpenGist(app.gists);}">
+            <svg class="icon menu-icon icon-github icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-github"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            Open Gist
+          </span>
+          <!-- ko if:app.osName === "mobile" -->
+          <span id="pwaTryShare" class="item" data-bind="click: function() { app.data.tryShareFilePwa('yarn');}">
+            <svg class="icon menu-icon icon-share-square-o icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-share-square-o"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            Share File
+          </span>
+          <!-- /ko -->
+        </div>
+      </div> <!-- file menu -->
+      <!-- edit menu -->
+      <div class="menu">
+        <span class="title">Edit</span>
+        <div class="dropdown">
+          <span class="item">
+            <svg class="icon menu-icon icon-hashtag icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-hashtag"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            File Tags
+          </span>
+          <span class="item" data-bind="click:app.ui.openSettingsDialog">
+            <svg class="icon menu-icon icon-cog icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-cog"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            Preferences
+          </span>
+        </div>
+      </div> <!-- edit menu -->
+      <!-- export menu -->
+      <div class="menu">
+        <span class="title">Export</span>
+        <div class="dropdown">
           <span class="item" data-bind="click: function() { app.data.trySave('json');}">
             <svg class="icon menu-icon icon-javascript icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-javascript"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
@@ -116,29 +150,14 @@
             <svg class="icon menu-icon icon-document-file-xml icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-document-file-xml"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
             Save as Xml
-          </span>
-          <span id="gistTryOpen" class="item" data-bind="click: function() { app.data.tryOpenGist(app.gists);}">
-            <svg class="icon menu-icon icon-github icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-github"></use></svg>
-            <span class="hide-when-narrow">&nbsp;</span>
-            Open Gist
-          </span>
+          </span> -->
           <span id="gistTrySave" class="item" data-bind="click: function() { app.data.trySaveGist(app.gists);}">
             <svg class="icon menu-icon icon-save-gist icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-save-gist"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
             Save to Gist
           </span>
-          <span id="pwaTryShare" class="item" data-bind="click: function() { app.data.tryShareFilePwa('yarn');}">
-            <svg class="icon menu-icon icon-share-square-o icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-share-square-o"></use></svg>
-            <span class="hide-when-narrow">&nbsp;</span>
-            Share File
-          </span>
-          <span class="item" data-bind="click:app.ui.openSettingsDialog">
-            <svg class="icon menu-icon icon-cog icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-cog"></use></svg>
-            <span class="hide-when-narrow">&nbsp;</span>
-            Settings
-          </span>
         </div>
-      </div> <!-- file menu -->
+      </div> <!-- export menu -->
     </div> <!-- app-menu -->
 
     <!-- grid bg for snap to grid functionality -->

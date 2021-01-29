@@ -1,4 +1,5 @@
 const electron = require("electron");
+const nativeImage = electron.nativeImage;
 const ipcMain = electron.ipcMain;
 const { dialog } = electron;
 const isDev = require("electron-is").dev();
@@ -26,7 +27,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: __dirname + '/icon.ico'
+    icon: nativeImage.createFromPath(__dirname + '/icon.ico')
   });
   mainWindow.setMenu(null);
   // and load the index.html of the app.

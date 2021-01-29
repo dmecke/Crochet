@@ -45,3 +45,5 @@ if ('serviceWorker' in navigator) {
 
 window.app = new App('Yarn Scribbler', version);
 window.app.run();
+
+ko.options.foreachHidesDestroyed = true;

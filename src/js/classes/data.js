@@ -694,7 +694,6 @@ export const data = {
       const gists = app.gists;
       gists.get(gists.file).then((gist) => {
         const yarnData = data.getSaveData(data.editingType());
-        console.log(data.editingName());
         gists.edit(gists.file, {
           files: { [data.editingName()]: { content: yarnData } },
         });
