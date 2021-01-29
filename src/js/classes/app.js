@@ -515,7 +515,7 @@ export var App = function(name, version) {
   this.refreshWindowTitle = function() {
     let title = '';
     if (data.lastStorageHost() === 'LOCAL') {
-      title = 'Yarn - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
+      title = 'YarnScribbler - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
     } else if (data.lastStorageHost() === 'GIST'){
       title = 'Gist - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
     }
