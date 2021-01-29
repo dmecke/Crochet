@@ -39,8 +39,6 @@ function createWindow() {
   }
 
   mainWindow.on("close", function(event) {
-    mainWindow.webContents.send("appIsClosing", event);
-
     event.preventDefault();
 
     mainWindow.destroy();
