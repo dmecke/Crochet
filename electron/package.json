@@ -28,7 +28,7 @@
   "devDependencies": {
     "copyfiles": "^2.1.1",
     "electron": "^9.4.0",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^22.9.1"
   },
   "lint-staged": {
     "package.json": [
@@ -48,7 +48,7 @@
       "role": "editor"
     },
     "win": {
-      "target": "msi",
+      "target": "nsis",
       "icon": "build/icon.ico"
     }
   }
