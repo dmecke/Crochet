@@ -49,7 +49,7 @@ export const data = {
   setNewFile: function() {
     Swal.fire({
       title: 'Create a New File?',
-      text: `Any unsaved progress to ${data.editingName()}.${data.editingType()} will be lost!`,
+      text: `Any unsaved progress to ${data.editingName()} will be lost!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'New file',
@@ -346,11 +346,10 @@ export const data = {
         for (let i = 0; i < content.length; i++) objects.push(content[i]);
     }
 
-    app.limitNodesUpdate(() => {
-      if (clearNodes) app.nodes.removeAll();
-
-      data.getNodesFromObjects(objects).forEach((node) => app.nodes.push(node));
-    });
+    if (clearNodes) {
+      app.nodes.removeAll();
+    }
+    data.getNodesFromObjects(objects).forEach((node) => app.nodes.push(node));
 
     app.updateNodeLinks();
     app.workspace.warpToNodeByIdx(0);
