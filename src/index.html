@@ -431,6 +431,18 @@
               </div>
             </div>
 
+            <!-- Editor Font Size -->
+            <div class="settings-item">
+              <label class="settings-label" for="fontSize">Editor Font Size</label>
+
+              <select id="fontSize" class="settings-value" data-bind="
+                options: app.ui.availableFontSizes,
+                optionsText: 'name',
+                optionsValue: 'id',
+                value: app.settings.editorFontSize">
+              </select>
+            </div>
+
             <!-- Story playtesting style -->
             <!-- <div class="settings-item">
               <label class="settings-label" for="theme">Playtesting Style</label>

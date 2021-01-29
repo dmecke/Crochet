@@ -26,6 +26,17 @@ export const UI = function(app) {
     { id: 'dracula', name: 'Dracula' }
   ];
 
+  // Font Size selector -----------------------------------------------------------
+  this.availableFontSizes = [
+    { id: '12px', name: '12px' },
+    { id: '14px', name: '14px (Default)' },
+    { id: '16px', name: '16px' },
+    { id: '18px', name: '18px' },
+    { id: '20px', name: '20px' },
+    { id: '22px', name: '22px' },
+    { id: '24px', name: '24px' }
+  ];
+
   // Playtest selector -----------------------------------------------------------
   this.availablePlaytestStyles = [
     { id: 'npc', name: 'Npc bubble' },

@@ -52,6 +52,10 @@ export const Settings = function(app) {
   this.theme = ko
     .observable(storage.getItem('theme') || 'classic')
     .extend({ persist:'theme' });
+  
+  this.editorFontSize = ko
+    .observable(storage.getItem('editorFontSize') || '14px')
+    .extend({ persist: 'editorFontSize'});
 
   // Language
   this.language = ko

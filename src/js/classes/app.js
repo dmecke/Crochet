@@ -813,7 +813,8 @@ export var App = function(name, version) {
       .transition({ y: '0', opacity: 1.0 }, 250);
     self.editor = ace.edit('editor');
     self.editor.setOptions({
-      scrollPastEnd: 0.5
+      scrollPastEnd: 0.5,
+      fontSize: self.settings.editorFontSize()
     })
     self.editor.navigateFileEnd();
 
