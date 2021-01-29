@@ -428,7 +428,8 @@
                 options: app.ui.availableFontSizes,
                 optionsText: 'name',
                 optionsValue: 'id',
-                value: app.settings.editorFontSize">
+                value: app.settings.editorFontSize,
+                event: { change: app.ui.setEditorFontSize }">
               </select>
             </div>
 
