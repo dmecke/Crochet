@@ -457,9 +457,11 @@ export var App = function(name, version) {
   };
 
   this.limitNodesUpdate = function ( fn ) {
-    self.nodes.extend({ rateLimit: { method: 'notifyWhenChangesStop', timeout: 250 } });
     fn();
-    self.nodes.limit( callback => () => callback() );
+    self.nodes.extend({ rateLimit: { method: 'notifyWhenChangesStop', timeout: 250 } });
+
+    // I have no idea what this does?? ->
+    //self.nodes.limit( callback => () => callback() );
   };
 
   this.getNodesConnectedTo = function(toNode) {
