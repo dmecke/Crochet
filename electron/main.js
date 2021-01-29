@@ -27,7 +27,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
-    icon: nativeImage.createFromPath(__dirname + '/icon.ico')
+    icon: nativeImage.createFromPath(__dirname + '/build/icon.ico')
   });
   mainWindow.setMenu(null);
   // and load the index.html of the app.
