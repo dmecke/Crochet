@@ -74,6 +74,7 @@ export const data = {
         editingType: data.editingType(),
         editingFolder: data.editingFolder(),
         editingTitle: app.editing() ? app.editing().title() : null,
+        fileTags: app.fileTags,
         nodes: data.getNodesAsObjects(),
         tags: app.tags(),
         editorSelection: app.editor ? app.editor.selection.getRange() : null,
@@ -97,6 +98,7 @@ export const data = {
         editingFolder,
         editingTitle,
         editorSelection,
+        fileTags,
         nodes,
         tags,
         transform,
@@ -107,6 +109,7 @@ export const data = {
       data.editingType(editingType);
       data.editingFolder(editingFolder);
       data.lastStorageHost(lastStorageHost);
+      app.fileTags = fileTags;
       app.nodes([]);
       data.getNodesFromObjects(nodes).forEach((node) => app.nodes.push(node));
       app.tags(tags);
@@ -160,6 +163,7 @@ export const data = {
         data.editingPath(file.path);
         data.lastStorageHost('LOCAL');
         app.refreshWindowTitle();
+        app.fileTags = {};
       }
     })
   },
@@ -237,7 +241,9 @@ export const data = {
       var index = 0;
       var readingBody = false;
       for (let i = 0; i < lines.length; i++) {
-        if (lines[i].trim() === '===') {
+        if (lines[i].trim().charAt(0) === '#') {
+          data.saveFileTag(lines[i].trim());
+        } else if (lines[i].trim() === '===') {
           readingBody = false;
           if (obj != null) {
             objects.push(obj);
@@ -361,6 +367,52 @@ export const data = {
     event.app = app;
     window.parent.dispatchEvent(event);
   },
+  saveFileTags: function(content) {
+    let lines = content.split(/\r?\n/);
+    lines.forEach(e => {
+      if (e.length > 1) {
+        let name;
+        let content;
+        if (e.includes(':')) {
+          name = e.match(/(?<=\#)(.*?)(?=\:)/)[0];
+          content = e.substr(e.indexOf(':') + 1).trim();
+        } else {
+          name = e.substr(e.indexOf('#') + 1)
+          content = true;
+        }
+        if (name && content) {
+          app.fileTags[name] = content;
+        }
+      }
+    })
+  },
+  saveFileTag: function(line) {
+    if (line.length > 1) {
+      let name;
+      let content;
+      if (line.includes(':')) {
+        name = line.match(/(?<=\#)(.*?)(?=\:)/)[0];
+        content = line.substr(line.indexOf(':') + 1).trim();
+      } else {
+        name = line.substr(line.indexOf('#') + 1)
+        content = true;
+      }
+      if (name && content) {
+        app.fileTags[name] = content;
+      }
+    }
+  },
+  clearFileTags: function() {
+    app.fileTags = {};
+    app.ui.fileTagsString = '';
+  },
+  convertFileTagsToString: function() {
+    let data = '';
+    for (const name in app.fileTags) {
+      data = data.concat('#' + name + ': ' + app.fileTags[name] + '\n');
+    }
+    return data;
+  },
   getNodeFromObject: function(object) {
     return new Node({
       title: object.title,
@@ -405,6 +457,7 @@ export const data = {
     if (type == FILETYPE.JSON) {
       output = JSON.stringify(content, null, '\t');
     } else if (type == FILETYPE.YARN) {
+      output += data.convertFileTagsToString();
       for (let i = 0; i < content.length; i++) {
         output += 'title: ' + content[i].title + '\n';
         output += 'tags: ' + content[i].tags + '\n';
@@ -700,6 +753,8 @@ export const data = {
         data.isDocumentDirty(false);
         app.refreshWindowTitle();
       });
+    } else if (!data.editingPath()) {
+      
     } else if (data.editingPath().length > 0 && data.editingType().length > 0) {
       data.saveTo(data.editingPath(), data.getSaveData(data.editingType()));
     }

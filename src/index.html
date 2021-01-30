@@ -95,6 +95,11 @@
             <span class="hide-when-narrow">&nbsp;</span>
             Open
           </span>
+          <span id="gistTryOpen" class="item" data-bind="click: function() { app.data.tryOpenGist(app.gists);}">
+            <svg class="icon menu-icon icon-github icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-github"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            Open Gist
+          </span>
           <!-- ko if:data.editingPath() != null -->
           <span class="item" data-bind="click: app.data.trySaveCurrent">
             <svg class="icon menu-icon icon-save icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-save"></use></svg>
@@ -102,11 +107,6 @@
             Save
           </span>
           <!-- /ko -->
-          <span id="gistTryOpen" class="item" data-bind="click: function() { app.data.tryOpenGist(app.gists);}">
-            <svg class="icon menu-icon icon-github icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-github"></use></svg>
-            <span class="hide-when-narrow">&nbsp;</span>
-            Open Gist
-          </span>
           <!-- ko if:app.osName === "mobile" -->
           <span id="pwaTryShare" class="item" data-bind="click: function() { app.data.tryShareFilePwa('yarn');}">
             <svg class="icon menu-icon icon-share-square-o icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-share-square-o"></use></svg>
@@ -120,7 +120,7 @@
       <div class="menu">
         <span class="title">Edit</span>
         <div class="dropdown">
-          <span class="item">
+          <span class="item" data-bind="click:app.ui.openFileTagsDialog">
             <svg class="icon menu-icon icon-hashtag icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-hashtag"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
             File Tags
@@ -136,16 +136,16 @@
       <div class="menu">
         <span class="title">Export</span>
         <div class="dropdown">
-          <span class="item" data-bind="click: function() { app.data.trySave('json');}">
-            <svg class="icon menu-icon icon-javascript icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-javascript"></use></svg>
-            <span class="hide-when-narrow">&nbsp;</span>
-            Save as Json
-          </span>
           <span class="item" data-bind="click: function() { app.data.trySave('yarn'); }">
             <img style="margin:0; padding:0" width="20px" src="./public/icon.ico" alt="Yarn Icon" />
             <span class="hide-when-narrow">&nbsp;</span>
-            Save as Yarn
+            Yarn File
           </span>
+          <!-- <span class="item" data-bind="click: function() { app.data.trySave('json');}">
+            <svg class="icon menu-icon icon-javascript icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-javascript"></use></svg>
+            <span class="hide-when-narrow">&nbsp;</span>
+            JSON File
+          </span> -->
           <!-- <span class="item" data-bind="click: function() { app.data.trySave('twee'); }">
             <img style="margin:0; padding:0" width="20px" src="./public/images/twine-favicon-152.png" alt="Twine Icon" />
             <span class="hide-when-narrow">&nbsp;</span>
@@ -164,7 +164,7 @@
           <span id="gistTrySave" class="item" data-bind="click: function() { app.data.trySaveGist(app.gists);}">
             <svg class="icon menu-icon icon-save-gist icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-save-gist"></use></svg>
             <span class="hide-when-narrow">&nbsp;</span>
-            Save to Gist
+            Upload to Gist
           </span>
         </div>
       </div> <!-- export menu -->
@@ -387,7 +387,7 @@
     <!-- ko if:app.ui.settingsDialogVisible() === true -->
     <div id="settings-dialog" class="settings-dialog" data-bind="mousedown: app.ui.closeSettingsDialog">
       <div class="settings-form" data-bind="preventBubble: 'click', preventBubble: 'mousedown'">
-        <h3>Settings</h3>
+        <h3>Preferences</h3>
         <div class="settings-row">
           <div class="settings-column">
             <!-- Language -->

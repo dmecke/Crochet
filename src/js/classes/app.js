@@ -75,6 +75,7 @@ export var App = function(name, version) {
   this.editing = ko.observable(null);
   this.nodes = ko.observableArray([]);
   this.tags = ko.observableArray([]);
+  this.fileTags = {};
   this.mustRefreshNodes = ko.observable();
   this.mustUpdateTags = true;
   this.nodeHistory = [];

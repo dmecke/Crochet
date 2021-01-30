@@ -67,6 +67,16 @@ input[type='checkbox'] {
   display: none !important;
 }
 
+.swal2-validation-message::before {
+  display: none !important;
+}
+
+.fileTagsInput {
+  resize: vertical;
+  max-height: 60vh;
+  min-height: 10vh;
+}
+
 /* --- VARIOUS CSS --- */
 #app-bg {
   position: fixed;

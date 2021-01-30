@@ -1,3 +1,6 @@
+import Swal from "sweetalert2";
+import { data } from "synonyms/dictionary";
+
 export const UI = function(app) {
   const self = this;
   this.notification = Swal.mixin({
@@ -8,6 +11,7 @@ export const UI = function(app) {
   });
 
   this.settingsDialogVisible = ko.observable(false);
+  this.fileTagsDialogVisible = ko.observable(false);
   this.narrowScreenThreshold = 600;
   this.isScreenNarrow = function() {
     return ($(window).width() <= self.narrowScreenThreshold);
@@ -113,9 +117,71 @@ export const UI = function(app) {
     setTimeout(() => app.settings.apply(), 100);
   };
 
+  // openFileTagsDialog
+  this.openFileTagsDialog = function() {
+    Swal.fire({
+      input: 'textarea',
+      width: '80%',
+      heightAuto: false,
+      title: 'Enter File Tags',
+      customClass: {
+        input: 'fileTagsInput'
+      },
+      inputPlaceholder: '#tag_name: tag_content',
+      inputValue: app.data.convertFileTagsToString(),
+      allowOutsideClick: false,
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      confirmButtonText: 'Save',
+      showCancelButton: true,
+      focusConfirm: false,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          let lines = value.match(/^.*((\r\n|\n|\r)|$)/gm);
+          let nameValues = [];
+          lines.forEach((e, index) => {
+            if (e.length === 0 || e === "\n") {
+              if(lines.length === 1) {
+                resolve();
+              } else {
+                return;
+              }
+            } else if (e.charAt(0) !== "#") {
+              resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>File tags need to begin with a "#"');
+            } else if (e.length <= 1) {
+              resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>File tag names need to be longer than 0 characters.');
+            } else {
+              let name = '';
+              if (e.includes(':')) {
+                name = e.match(/(?<=\#)(.*?)(?=\:)/)[0].trim();
+              } else {
+                name = e.substr(e.indexOf('#') + 1).trim();
+              }
+              if (nameValues.includes(name)) {
+                resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>Duplicate tag names used');
+              } else {
+                nameValues.push(name);
+              }
+            }
+          })
+          resolve();
+        })
+      }
+    }).then((result) => {
+      if (result.value) {
+        app.fileTags = {};
+        app.data.saveFileTags(result.value);
+        self.notification.fire({
+          icon: 'success',
+          title: 'File Tags Validated!'
+        });
+      }
+    });
+  }
+
   // isDialogOpen
   this.isDialogOpen = function () {
-    return self.settingsDialogVisible() || (Swal.isVisible() && !Swal.isTimerRunning());
+    return self.settingsDialogVisible() || self.fileTagsDialogVisible() || (Swal.isVisible() && !Swal.isTimerRunning());
   };
 
   this.setEditorFontSize = function() {
