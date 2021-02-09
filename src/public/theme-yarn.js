@@ -13,34 +13,39 @@ color: #000;\
 }\
 .ace-yarn .ace_comment {\
 color: #00c171;\
-font-style: italic;\
 }\
-.ace-yarn .ace_variable.ace_language  {\
-color: #0086B3;\
-}\
-.ace-yarn .ace_paren {\
-font-weight: bold;\
-}\
-.ace-yarn .ace_string.ace_llink {\
-color: #000;\
-}\
-.ace-yarn .ace_string.ace_rlink {\
-color: #3ecfe9;\
-}\
-.ace-yarn .ace_string.ace_comm {\
+.ace-yarn .ace_keyword {\
 color: #e93ecf;\
 }\
-.ace-yarn .ace_paren.ace_lcomm, .ace-yarn .ace_paren.ace_rcomm {\
+.ace-yarn .ace_variable {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_numeric {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_boolean {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_shortcut {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_string {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_nametag {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_node_name {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_command_open, .ace-yarn .ace_command_close {\
 color: #e00ec0;\
 }\
-.ace-yarn .ace_paren.ace_llink, .ace-yarn .ace_paren.ace_rlink {\
-color: #0ec0e0;\
+.ace-yarn .ace_expression_open, .ace-yarn .ace_expression_close {\
+color: #e00ec0;\
 }\
 .ace-yarn .ace_variable.ace_instance {\
 color: teal;\
-}\
-.ace-yarn .ace_constant.ace_language {\
-font-weight: bold;\
 }\
 .ace-yarn .ace_cursor {\
 color: black;\

@@ -591,15 +591,15 @@ input.ace_search_field {
   cursor: default;
 }
 
-.ace-yarn .ace_paren.ace_lcomm, .ace-yarn .ace_paren.ace_rcomm {
-  color: #bd93f9;
-}
-
-.ace-yarn .ace_string.ace_comm {
+.ace-yarn .ace_command_open, .ace-yarn .ace_command_close {
   color: #ff79c6;
 }
 
-.ace-yarn .ace_string.ace_llink {
+.ace-yarn .ace_expression_open, .ace-yarn .ace_expression_close {
+  color: #ff79c6;
+}
+
+.ace-yarn .ace_string {
   color: #f1fa8c;
 }
 
@@ -607,8 +607,36 @@ input.ace_search_field {
   color: #50fa7b;
 }
 
-.ace-yarn .ace_paren.ace_llink, .ace-yarn .ace_paren.ace_rlink {
-  color: #bd93f9;
+.ace-yarn .ace_keyword {
+  color: #ff79c6;
+}
+
+.ace-yarn .ace_numeric {
+  color: #8be9fd;
+}
+
+.ace-yarn .ace_boolean {
+  color: #8be9fd;
+}
+
+.ace-yarn .ace_shortcut {
+  color: #ffb86c;
+}
+
+.ace-yarn .ace_variable {
+  color: #A2A5CC;
+}
+
+.ace-yarn .ace_nametag {
+  color: #A2A5CC;
+}
+
+.ace-yarn .ace_node_name {
+  color: #8be9fd;
+}
+
+.ace-yarn .ace_comment {
+  color: #6272a4;
 }
 
 .story-playtest-bubble {

@@ -22,41 +22,93 @@ define('ace/mode/yarn', [
           regex: '\/\/.*$'
         },
         {
-          token: 'paren.lcomm',
+          token: 'command_open',
           regex: '<<',
-          next: 'comm'
+          next: 'command'
         },
         {
-          token: 'paren.llink',
-          regex: '\\[\\[',
-          next: 'link'
+          token: 'expression_open',
+          regex: '\\{',
+          next: 'expression'
+        },
+        {
+          token: 'shortcut',
+          regex: '->\\s'
+        },
+        {
+          token: 'nametag',
+          regex: '.+(?=:)'
         }
       ],
-      link: [
+      expression: [
         {
-          token: 'string.rlink',
-          regex: '\\|\\w*[a-zA-Z0-9 ]+'
+          token: 'variable',
+          regex: '\\$\\w*'
         },
         {
-          token: 'string.llink',
-          regex: '[a-zA-Z0-9 ]+'
-        },
-        {
-          token: 'paren.rlink',
-          regex: '\\]\\]',
+          token: 'expression_close',
+          regex: '\\}',
           next: 'start'
         }
       ],
-      comm: [
+      command: [
         {
-          token: 'string.comm',
-          regex: '[A-Za-z0-9 _.,!:\'\'/$ ]+'
+          token: 'keyword',
+          regex: '(stop|set|declare|if|else|elseif|endif)',
         },
         {
-          token: 'paren.rcomm',
+          token: 'keyword',
+          regex: 'jump',
+          next: 'jump'
+        },
+        {
+          token: 'string',
+          regex: '"[^"\\\r\n]*(?:\\.[^"\\\r\n]*)*"'
+        },
+        {
+          token: 'variable',
+          regex: '\\$\\w*'
+        },
+        {
+          token: 'numeric',
+          regex: '((\\b[0-9]+)?\\.)?[0-9]+\\b'
+        },
+        {
+          token: 'boolean',
+          regex: '(true|false)'
+        },
+        {
+          token: 'command_close',
           regex: '>>',
           next: 'start'
+        },
+        {
+          token: 'expression_open',
+          regex: '\\{'
+        },
+        {
+          token: 'expression_close',
+          regex: '\\}'
         }
+      ],
+      jump: [
+        {
+          token: function(value) {
+            console.log(app.getOtherNodeTitles());
+            console.log(value.replace(/[ >>]+/g, ''));
+            if (app.getOtherNodeTitles().includes(value.replace(/[ >>]+/g, ''))) {
+              return 'node_name'
+            } else {
+              return 'yarn'
+            }
+          },
+          regex: '[^ >>]+'
+        },
+        {
+          token: 'command_close',
+          regex: '>>',
+          next: 'start'
+        },
       ]
     };
   };
