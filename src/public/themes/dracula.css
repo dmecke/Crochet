@@ -109,17 +109,17 @@
   color: #ffb86c;
 }
 
-.add-link {
+.add-jump {
   box-shadow: 0 0 1px 1px #191A21;
   color: #f8f8f2;
   background: #343746;
 }
 
-.add-link:hover {
+.add-jump:hover {
   background: #6272a4;
 }
 
-#linkHelperMenuFilter {
+#jumpHelperMenuFilter {
   border-right: 2px solid #343746;
   border-left: 2px solid #343746;
 }

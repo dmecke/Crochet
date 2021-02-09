@@ -219,8 +219,8 @@ export const UI = function(app) {
 
   // openNodeListMenu
   this.openNodeListMenu = function(action) {
-    const searchText = action === 'link' ?
-      document.getElementById('linkHelperMenuFilter').value.toLowerCase() :
+    const searchText = action === 'jump' ?
+      document.getElementById('jumpHelperMenuFilter').value.toLowerCase() :
       document.getElementById('nodeSearchInput').value.toLowerCase();
 
     const rootMenu = document.getElementById(action + 'HelperMenu');
@@ -238,13 +238,13 @@ export const UI = function(app) {
         p.innerHTML = node.title();
         $(p).addClass('item ' + app.nodes()[i].titleStyles[app.nodes()[i].colorID()]);
 
-        if (action == 'link') {
+        if (action == 'jump') {
           if (node.title() !== app.editing().title()) {
             p.setAttribute(
               'onclick',
-              'app.insertTextAtCursor(\'[[' +
+              'app.insertTextAtCursor(\'<<jump ' +
                 node.title() +
-                ']]\')'
+                '>>\')'
             );
             rootMenu.appendChild(p);
           }

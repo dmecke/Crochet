@@ -73,15 +73,15 @@
   color: black;
 }
 
-.add-link {
+.add-jump {
   box-shadow: 0 0 1px 1px #e8e8e8;
 }
 
-.add-link:hover {
+.add-jump:hover {
   background: orange;
 }
 
-#linkHelperMenuFilter {
+#jumpHelperMenuFilter {
   border-right: 2px solid orange;
   border-left: 2px solid orange;
 }

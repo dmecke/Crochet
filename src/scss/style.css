@@ -965,7 +965,7 @@ input:focus + span + .dropdown {
   width: 24px;
 }
 
-.add-link {
+.add-jump {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -980,17 +980,17 @@ input:focus + span + .dropdown {
   max-width: 40%;
 }
 
-.add-link:hover {
+.add-jump:hover {
   background: #e8e8e8;
 }
 
-#linkHelperMenuFilter {
+#jumpHelperMenuFilter {
   border-right: 2px solid #e8e8e8;
   border-left: 2px solid #e8e8e8;
   border-bottom: 0;
 }
 
-#add-link-title {
+#add-jump-title {
   line-height: 40px;
   text-align: center;
   padding: 0;
@@ -1191,7 +1191,7 @@ input:focus + span + .dropdown {
     opacity: 0.85;
   }
 
-  #linkHelperMenuFilter {
+  #jumpHelperMenuFilter {
     min-height: 35px;
   }
 
@@ -1246,14 +1246,14 @@ input:focus + span + .dropdown {
     left: 23px !important;
   }
 
-  .add-link {
+  .add-jump {
     top: 0;
     right: 20px;
     height: 20px;
     border-radius: 4px;
   }
   
-  #add-link-title {
+  #add-jump-title {
     line-height: 20px;
   }
 }

@@ -288,14 +288,14 @@
           </span>
         </div>
 
-        <div class="add-link" style="position: absolute;">
+        <div class="add-jump" style="position: absolute;">
           <div class="menu">
-            <span id="add-link-title" class="title" onmouseenter="app.ui.openNodeListMenu('link')" onclick="app.ui.openNodeListMenu('link')">Add Link</span>
-            <div id="add-link-dropdown" class="dropdown">
+            <span id="add-jump-title" class="title" onmouseenter="app.ui.openNodeListMenu('jump')" onclick="app.ui.openNodeListMenu('jump')">Add Jump</span>
+            <div id="add-jump-dropdown" class="dropdown">
               <form autocomplete="off" onkeypress="return event.keyCode != 13;">
-                <input class="search-field" autocomplete="off" placeholder="search" type="text" id="linkHelperMenuFilter" oninput="app.ui.openNodeListMenu('link')"></input>
+                <input class="search-field" autocomplete="off" placeholder="search" type="text" id="jumpHelperMenuFilter" oninput="app.ui.openNodeListMenu('jump')"></input>
               </form>
-              <div id="linkHelperMenu"></div>
+              <div id="jumpHelperMenu"></div>
             </div>
           </div>
         </div>
