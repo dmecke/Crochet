@@ -1,7 +1,6 @@
 /* eslint-disable jquery/no-ajax */
 const path = require('path');
 const saveAs = require('file-saver');
-import Swal from 'sweetalert2';
 import { Node } from './node';
 import { Utils, FILETYPE } from './utils';
 
@@ -41,10 +40,10 @@ export const data = {
       inputPlaceholder: 'NewFile',
       showCancelButton: true,
     }).then((result) => {
-      if (result.value || result.value === "") {
-        data.startNewFile((result.value || 'NewFile'));
+      if (result.value || result.value === '') {
+        data.startNewFile(result.value || 'NewFile');
       }
-    })
+    });
   },
   setNewFile: function() {
     Swal.fire({
@@ -133,7 +132,7 @@ export const data = {
       if (type == FILETYPE.UNKNOWN)
         Swal.fire({
           title: 'Unknown filetype!',
-          icon: 'error'
+          icon: 'error',
         });
       else {
         data.editingPath(file.path);
@@ -144,52 +143,51 @@ export const data = {
     reader.readAsText(file);
   },
 
+  setNewFileStats: function(fileName, filePath, lastStorageHost = 'LOCAL') {
+    data.editingName(fileName.replace(/^.*[\\\/]/, ''));
+    data.isDocumentDirty(false);
+    data.editingPath(filePath);
+    data.lastStorageHost(lastStorageHost);
+    app.refreshWindowTitle();
+  },
   openFile: function(file, filename) {
-    const confirmText = data.editingPath() ?
-    'Any unsaved progress to ' + data.editingName() + ' will be lost.' :
-    'Any unsaved progress will be lost.';
+    const confirmText = data.editingPath()
+      ? 'Any unsaved progress to ' + data.editingName() + ' will be lost.'
+      : 'Any unsaved progress will be lost.';
 
     Swal.fire({
       title: 'Are you sure you want to open another file?',
       text: confirmText,
       icon: 'warning',
       showConfirmButton: true,
-      showCancelButton: true
+      showCancelButton: true,
     }).then((result) => {
       if (result.value === true) {
-        data.editingName(filename.replace(/^.*[\\\/]/, ''));
         data.readFile(file, filename, true);
-        data.isDocumentDirty(false);
-        data.editingPath(file.path);
-        data.lastStorageHost('LOCAL');
+        data.setNewFileStats(filename, file.path);
         app.refreshWindowTitle();
         app.fileTags = {};
       }
-    })
+    });
   },
-  openFileOnStart: function(path, filename) {
+  openFileFromFilePath: function(filePath) {
+    const fileName = app.path.basename(filePath);
     $.ajax({
-      url: path,
+      url: filePath,
       async: false,
       success: (result) => {
-        let type = data.getFileType(filename);
+        const type = data.getFileType(fileName);
         if (type == FILETYPE.UNKNOWN) {
           Swal.fire({
             title: 'Unknown filetype!',
-            icon: 'error'
+            icon: 'error',
           });
-          self.loadAppStateFromLocalStorage();
         } else {
-          data.editingName(filename.replace(/^.*[\\\/]/, ''));
-          data.editingPath(path);
-          data.editingType(type);
           data.loadData(result, type, true);
-          data.isDocumentDirty(false);
-          data.lastStorageHost('LOCAL');
-          app.refreshWindowTitle();
+          data.setNewFileStats(fileName, filePath);
         }
-      }
-    })
+      },
+    });
   },
   openFiles: function(file, filename) {
     const files = document.getElementById('open-file').files;
@@ -201,9 +199,10 @@ export const data = {
   openFolder: function(e, foldername) {
     editingFolder = foldername;
     Swal.fire({
-      text: 'openFolder not yet implemented e: ' + e + ' foldername: ' + foldername,
-      icon: 'error'
-    })
+      text:
+        'openFolder not yet implemented e: ' + e + ' foldername: ' + foldername,
+      icon: 'error',
+    });
   },
 
   appendFile: function(file, filename) {
@@ -524,13 +523,13 @@ export const data = {
         if (err) {
           Swal.fire({
             title: 'Error Saving Data to ' + path + ': ' + err,
-            icon: 'error'
-          })
+            icon: 'error',
+          });
         } else {
           app.ui.notification.fire({
             title: 'Saved!',
             icon: 'success',
-          })
+          });
         }
       });
     }
@@ -641,9 +640,10 @@ export const data = {
           .catch((error) => console.log('Error sharing', error));
       } else {
         Swal.fire({
-          title: 'Web Share API is not supported in your browser.\nTry using it on your smartphone or tablet...',
-          icon: 'error'
-        })
+          title:
+            'Web Share API is not supported in your browser.\nTry using it on your smartphone or tablet...',
+          icon: 'error',
+        });
       }
     });
   },

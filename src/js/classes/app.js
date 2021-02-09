@@ -17,7 +17,6 @@ import { data } from './data';
 import { yarnRender } from './renderer';
 import { Utils, FILETYPE } from './utils';
 import { RichTextFormatter } from './richTextFormatter';
-import Swal from 'sweetalert2';
 
 // TODO: refactoring proposals
 //
@@ -33,7 +32,10 @@ export var App = function(name, version) {
     let themeName = e ? e.target.value : name;
     setTimeout(self.initGrid, 50);
     setTimeout(self.workspace.updateArrows, 50);
-    $('#theme-stylesheet').attr('href', Utils.getPublicPath(`themes/${themeName}.css`));
+    $('#theme-stylesheet').attr(
+      'href',
+      Utils.getPublicPath(`themes/${themeName}.css`),
+    );
   };
 
   this.setLanguage = function(language, e) {
@@ -54,7 +56,7 @@ export var App = function(name, version) {
   };
 
   this.setGistCredentials = function(gist, e) {
-    const {token, file} = gist;
+    const { token, file } = gist;
     const Gists = require('gists');
     const gists = new Gists({ token });
     self.gists = gists;
@@ -96,30 +98,33 @@ export var App = function(name, version) {
   this.isEditorSplit = false;
   this.isEditorFocused = false;
   this.editorResizeHandleOptions = {
-    handleSelector: "#editor-resize-handle",
+    handleSelector: '#editor-resize-handle',
     resizeHeight: false,
     resizeWidthFrom: 'right',
     onDragStart: function() {
       self.isSplitEditorInFocus = true;
-      $('#node-editor').removeClass('split-editor-out-of-focus')
+      $('#node-editor').removeClass('split-editor-out-of-focus');
     },
     onDragEnd: function() {
       self.editor.resize();
       self.settings.editorSplitSize($('#editor-form').width());
-    }
-  }
+    },
+  };
 
   // inEditor
   //
   // Indicates if we are in the editor view
   this.inEditor = () =>
-    (self.editing() || (self.isEditorSplit && self.isEditorFocused)) && !self.ui.isDialogOpen();
+    (self.editing() || (self.isEditorSplit && self.isEditorFocused)) &&
+    !self.ui.isDialogOpen();
 
   // inWorkspace
   //
   // Indicates if we are in the workspace view
   this.inWorkspace = () =>
-    (!self.editing() || (self.isEditorSplit && self.isEditorFocused === false)) && !self.ui.isDialogOpen();
+    (!self.editing() ||
+      (self.isEditorSplit && self.isEditorFocused === false)) &&
+    !self.ui.isDialogOpen();
 
   // run
   //
@@ -143,21 +148,28 @@ export var App = function(name, version) {
 
     if (osName == 'Windows') self.workspace.zoomSpeed = 0.1;
 
-    window.addEventListener('beforeunload', e => {
+    window.addEventListener('beforeunload', (e) => {
       this.data.saveAppStateToLocalStorage();
       return null;
     });
-    window.addEventListener('DOMContentLoaded', e => {
-      if (self.isElectron) {
-        var event = new CustomEvent('yarnReadyToLoad');
-        event.app = this;
-        window.parent.dispatchEvent(event);
-      } else {
-        self.data.loadAppStateFromLocalStorage();
+    window.addEventListener('DOMContentLoaded', (e) => {
+      // Electron is receiving a filepath
+      if (self.electron) {
+        let filePath =
+          self.electron.remote.process.argv.length > 1
+            ? self.electron.remote.process.argv[1]
+            : null;
+        if (filePath && app.fs.existsSync(filePath)) {
+          this.data.openFileFromFilePath(filePath);
+          return;
+        }
       }
-      
+      this.data.loadAppStateFromLocalStorage();
+
+      // PWA is receiving shared data
       const parsedUrl = new URL(window.location);
-      const sharedText = parsedUrl.searchParams.get('text') || parsedUrl.searchParams.get('url');
+      const sharedText =
+        parsedUrl.searchParams.get('text') || parsedUrl.searchParams.get('url');
       if (sharedText !== null) {
         self.insertTextAtCursor(sharedText);
         // setTimeout(() => self.insertTextAtCursor(sharedText), 100);
@@ -246,7 +258,7 @@ export var App = function(name, version) {
       self.togglePreviewMode(true);
       $('#emojiPicker-container').css({
         left: self.input.mouse.x - 200,
-        top: self.input.mouse.y - 125
+        top: self.input.mouse.y - 125,
       });
       $('#emojiPicker-container').show();
     };
@@ -261,10 +273,9 @@ export var App = function(name, version) {
       $('#colorPicker').spectrum('toggle');
       $('#colorPicker-container').css({
         left: self.input.mouse.x - 70,
-        top: self.input.mouse.y - 50
+        top: self.input.mouse.y - 50,
       });
       $('#colorPicker-container').show();
-
 
       self.togglePreviewMode(true);
       setTimeout(() => {
@@ -276,7 +287,7 @@ export var App = function(name, version) {
     // TODO: move to editor
     this.applyPickerColorEditor = function(color) {
       const selectRange = JSON.parse(
-        JSON.stringify(self.editor.selection.getRange())
+        JSON.stringify(self.editor.selection.getRange()),
       );
       self.editor.selection.setRange(selectRange);
       const colorCode = color.toHexString().replace('#', '');
@@ -296,7 +307,7 @@ export var App = function(name, version) {
       function(evt) {
         if (self.editing()) evt.preventDefault();
       },
-      false
+      false,
     );
 
     this.speakText = function() {
@@ -305,9 +316,9 @@ export var App = function(name, version) {
         ? selectedText
         : self.editor.getSession().getValue();
 
-      spoken.voices().then(countries => {
+      spoken.voices().then((countries) => {
         const lookUp = self.settings.language().split('-')[0];
-        const voices = countries.filter(v => !v.lang.indexOf(lookUp));
+        const voices = countries.filter((v) => !v.lang.indexOf(lookUp));
 
         if (voices.length) {
           console.log('Loaded voice', voices[0]);
@@ -321,7 +332,7 @@ export var App = function(name, version) {
     this.startCapture = function() {
       spoken
         .listen({ continuous: true })
-        .then(transcript => {
+        .then((transcript) => {
           console.log(transcript);
           if (self.editing()) {
             self.insertTextAtCursor(transcript + '. ');
@@ -352,7 +363,7 @@ export var App = function(name, version) {
             this.continueCapture();
           });
         })
-        .catch(e => spoken.listen.stop().then(() => this.continueCapture()));
+        .catch((e) => spoken.listen.stop().then(() => this.continueCapture()));
     };
 
     this.continueCapture = function() {
@@ -365,7 +376,7 @@ export var App = function(name, version) {
       const available = spoken.listen.available();
       var speakBubble = document.getElementById('speakTextBtnBubble');
       if (available && self.settings.transcribeEnabled()) {
-        spoken.listen.on.partial(ts => {
+        spoken.listen.on.partial((ts) => {
           if (self.editing()) {
             speakBubble.style.visibility = 'visible';
             speakBubble.title = `🗣️ ${ts} 🦜`;
@@ -386,37 +397,37 @@ export var App = function(name, version) {
       if (!available) {
         Swal.fire({
           title: 'Speech recognition not avaiilable!',
-          icon: 'error'
+          icon: 'error',
         });
         return;
       }
 
       // spoken.listen.on.partial(ts => ($("#speakTextBtn").title = ts));
-      spoken.listen.on.partial(ts => {
+      spoken.listen.on.partial((ts) => {
         console.log(ts);
         document.getElementById('speakTextBtnBubble').title = `🗣️ ${ts} 🦜`;
       });
 
       spoken
         .listen()
-        .then(transcript => {
+        .then((transcript) => {
           self.insertTextAtCursor(transcript + ' ');
           document.getElementById('speakTextBtnBubble').title = 'Transcribe';
         })
-        .catch(error => console.warn(error.message));
+        .catch((error) => console.warn(error.message));
     };
 
     // Handle file dropping
-    document.ondragover = document.ondrop = e => {
+    document.ondragover = document.ondrop = (e) => {
       e.preventDefault();
     };
-    document.body.ondrop = e => {
+    document.body.ondrop = (e) => {
       e.preventDefault();
       for (var i = 0; i < e.dataTransfer.files.length; i++) {
         data.appendFile(
           e.dataTransfer.files[i],
           e.dataTransfer.files[i].name,
-          false
+          false,
         );
       }
     };
@@ -426,26 +437,25 @@ export var App = function(name, version) {
       const message = event.data;
 
       switch (message.type) {
-      // sent whenever the temporary file that's open gets changed
-      case 'UpdateNode':
-        // find the node that was being edited... we check originalNodeTitle here
-        // since it's possible that the user changed the node's title in the editor
-        self.nodes().forEach(node => {
-          if (
-            node.title().trim() ===
-            message.payload.originalNodeTitle.trim()
-          ) {
-            node.title(message.payload.title);
-            node.tags(message.payload.tags);
-            node.body(message.payload.body);
+        // sent whenever the temporary file that's open gets changed
+        case 'UpdateNode':
+          // find the node that was being edited... we check originalNodeTitle here
+          // since it's possible that the user changed the node's title in the editor
+          self.nodes().forEach((node) => {
+            if (
+              node.title().trim() === message.payload.originalNodeTitle.trim()
+            ) {
+              node.title(message.payload.title);
+              node.tags(message.payload.tags);
+              node.body(message.payload.body);
 
-            // re-send the document back to the extension so it updates its underlying text document
-            self.setYarnDocumentIsDirty();
-          }
-        });
-        break;
-      default:
-        break;
+              // re-send the document back to the extension so it updates its underlying text document
+              self.setYarnDocumentIsDirty();
+            }
+          });
+          break;
+        default:
+          break;
       }
     });
 
@@ -505,7 +515,10 @@ export var App = function(name, version) {
       editorTitle.attr('title', 'Another node has the same title');
     } else if (!RegExp('^[a-z0-9]+$', 'i').test(enteredValue)) {
       editorTitle.attr('class', 'title title-error');
-      editorTitle.attr('title', 'Only upper or lower case letters and numbers are allowed in a node title.');
+      editorTitle.attr(
+        'title',
+        'Only upper or lower case letters and numbers are allowed in a node title.',
+      );
     } else {
       editorTitle.removeAttr('title');
       editorTitle.removeClass('title-error');
@@ -541,12 +554,15 @@ export var App = function(name, version) {
   // This should be called whenever we want to mark the document as changed.
   this.setYarnDocumentIsDirty = function() {
     // If we're in the VSCode extension, send it an update
-    if (self.usingVisualStudioCodeExtension() && self.editingVisualStudioCodeFile()) {
+    if (
+      self.usingVisualStudioCodeExtension() &&
+      self.editingVisualStudioCodeFile()
+    ) {
       window.vsCodeApi.postMessage({
         type: 'DocumentEdit',
-        
+
         // we just send the whole doc here every time...
-        payload: data.getSaveData(data.editingType())
+        payload: data.getSaveData(data.editingType()),
       });
     }
   };
@@ -664,21 +680,23 @@ export var App = function(name, version) {
 
   this.confirmDeleteNodes = function(toDelete) {
     const node = Array.isArray(toDelete) ? undefined : toDelete;
-    const selected = Array.isArray(toDelete) ?
-      [...toDelete] :
-      node && node.selected ?
-        [...self.workspace.getSelectedNodes()] :
-        [toDelete];
+    const selected = Array.isArray(toDelete)
+      ? [...toDelete]
+      : node && node.selected
+      ? [...self.workspace.getSelectedNodes()]
+      : [toDelete];
 
     if (selected.length) {
       Swal.fire({
         title: 'Are you sure?',
-        text: `${selected.length} ${selected.length === 1 ? 'node' : 'nodes'} will be deleted.`,
+        text: `${selected.length} ${
+          selected.length === 1 ? 'node' : 'nodes'
+        } will be deleted.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete!',
         cancelButtonText: 'No, cancel!',
-        reverseButtons: true
+        reverseButtons: true,
       }).then((result) => {
         if (result.value) {
           self.deleteNodes(selected);
@@ -691,26 +709,24 @@ export var App = function(name, version) {
     const list = Array.isArray(nodes) ? nodes : [nodes];
     const promises = [];
 
-    for (let i = list.length-1; i >= 0; --i)
-      promises.push( list[i].remove() );
+    for (let i = list.length - 1; i >= 0; --i) promises.push(list[i].remove());
 
-    Promise.all(promises)
-      .then( () => {
-        self.limitNodesUpdate( () => {
-          for (let i = list.length-1; i >= 0; --i) {
-            if (self.inEditor()) {
-              if (self.editing() === list[i]) {
-                self.closeEditor();
-              }
+    Promise.all(promises).then(() => {
+      self.limitNodesUpdate(() => {
+        for (let i = list.length - 1; i >= 0; --i) {
+          if (self.inEditor()) {
+            if (self.editing() === list[i]) {
+              self.closeEditor();
             }
-            self.deleteNode(list[i]);
           }
+          self.deleteNode(list[i]);
+        }
 
-          self.updateNodeLinks();
-          self.workspace.deselectNodes(list);
-          self.workspace.updateArrows();
-        });
+        self.updateNodeLinks();
+        self.workspace.deselectNodes(list);
+        self.workspace.updateArrows();
       });
+    });
   };
 
   this.deleteNode = function(node) {
@@ -736,12 +752,11 @@ export var App = function(name, version) {
   };
 
   // TODO: used just once. Fuse with newNodeAt and makeNodeWithName
-  this.newNode = function(updateLinks=true) {
+  this.newNode = function(updateLinks = true) {
     var node = new Node();
     self.nodes.push(node);
 
-    if (updateLinks)
-      self.updateNodeLinks();
+    if (updateLinks) self.updateNodeLinks();
 
     self.recordNodeAction('created', node);
 
@@ -749,7 +764,7 @@ export var App = function(name, version) {
   };
 
   this.newNodeAt = function(x, y) {
-    var node = new Node({ x: x - 100, y: y - 100});
+    var node = new Node({ x: x - 100, y: y - 100 });
 
     self.nodes.push(node);
 
@@ -774,8 +789,8 @@ export var App = function(name, version) {
       data: 'method=getQuote&format=jsonp&lang=en&jsonp=?',
       success: function(response) {
         Swal.fire({
-          text: (response.quoteText + '\n\n-' + response.quoteAuthor)
-        })
+          text: response.quoteText + '\n\n-' + response.quoteAuthor,
+        });
       },
     });
   };
@@ -794,11 +809,14 @@ export var App = function(name, version) {
 
     // Make sure we save the node being currently edited before editing a new
     // one using the context menu
-    if (self.editing() && self.editing() !== node)
-      self.saveNode(false);
-    
-    if (self.isEditorInPlayMode) { self.togglePlayMode(false); }
-    if (self.isEditorInPreviewMode) { self.togglePreviewMode(false); }
+    if (self.editing() && self.editing() !== node) self.saveNode(false);
+
+    if (self.isEditorInPlayMode) {
+      self.togglePlayMode(false);
+    }
+    if (self.isEditorInPreviewMode) {
+      self.togglePreviewMode(false);
+    }
 
     node.oldTitle = node.title(); // To check later if "title" changed
 
@@ -851,10 +869,15 @@ export var App = function(name, version) {
     const nodeLinksCompleter = Utils.createAutocompleter(
       ['string.llink', 'string.rlink'],
       self.getOtherNodeTitles(),
-      'Node Link'
+      'Node Link',
     );
     // console.log(langTools);
-    langTools.setCompleters([nodeLinksCompleter, langTools.keyWordCompleter, langTools.textCompleter, langTools.snippetCompleter]);
+    langTools.setCompleters([
+      nodeLinksCompleter,
+      langTools.keyWordCompleter,
+      langTools.textCompleter,
+      langTools.snippetCompleter,
+    ]);
 
     // autocompletion
     let autoCompleteTimeout = undefined;
@@ -865,10 +888,10 @@ export var App = function(name, version) {
           self.richTextFormatter.justInsertedAutoComplete = false;
           return;
         }
-        autoCompleteTimeout && clearTimeout (autoCompleteTimeout);
+        autoCompleteTimeout && clearTimeout(autoCompleteTimeout);
         autoCompleteTimeout = setTimeout(() => {
           autoCompleteTimeout = undefined;
-          self.richTextFormatter.completableTags.forEach( tag => {
+          self.richTextFormatter.completableTags.forEach((tag) => {
             if (self.getTagBeforeCursor() === tag.Start) {
               self.richTextFormatter.justInsertedAutoComplete = true;
               let insertedText = tag.Completion;
@@ -891,11 +914,11 @@ export var App = function(name, version) {
     /// init emoji picker
     this.emPicker = new EmojiPicker(
       document.getElementById('emojiPickerDom'),
-      emoji => {
+      (emoji) => {
         self.insertTextAtCursor(emoji.char);
         this.emPicker.toggle();
         self.togglePreviewMode(false);
-      }
+      },
     );
 
     /// init spell check
@@ -909,7 +932,10 @@ export var App = function(name, version) {
     self.updateEditorStats();
     self.updateEditorOptions();
 
-    if (self.$searchField.val().length > 0 && $('.search-body input').is(':checked')){
+    if (
+      self.$searchField.val().length > 0 &&
+      $('.search-body input').is(':checked')
+    ) {
       self.editor.findAll(self.$searchField.val());
     }
 
@@ -918,7 +944,7 @@ export var App = function(name, version) {
       self.workspace.warpToNodeByIdx(node.index() - 1);
     }
 
-    if (self.settings.editorSplitDirection() === "right") {
+    if (self.settings.editorSplitDirection() === 'right') {
       $('#editor-form').addClass('split-editor-right');
       $('#editor-resize-handle').addClass('float-right');
     } else {
@@ -931,7 +957,7 @@ export var App = function(name, version) {
         self.focusEditor(true);
         e.stopPropagation();
       }
-    })
+    });
 
     // Remove app-info while editor is open, can't see it anyway
     $('.app-info').hide();
@@ -947,23 +973,32 @@ export var App = function(name, version) {
     self.focusEditor(true);
     self.settings.editorSplit(true);
 
-    self.editorResizeHandleOptions.resizeWidthFrom = (self.settings.editorSplitDirection() === 'right') ? 'left' : 'right';
+    self.editorResizeHandleOptions.resizeWidthFrom =
+      self.settings.editorSplitDirection() === 'right' ? 'left' : 'right';
 
     // Editor Classes
     $('#editor-form')
-    .width(self.settings.editorSplitSize())
-    .addClass('split-editor')
-    .toggleClass('split-editor-right', self.settings.editorSplitDirection() === 'right')
-    .resizable(self.editorResizeHandleOptions);
+      .width(self.settings.editorSplitSize())
+      .addClass('split-editor')
+      .toggleClass(
+        'split-editor-right',
+        self.settings.editorSplitDirection() === 'right',
+      )
+      .resizable(self.editorResizeHandleOptions);
 
     // Hide editor background
     $('#node-editor-background').addClass('hidden');
 
     // Lower z-index
-    $('#node-editor').css({'z-index': 10002});
+    $('#node-editor').css({ 'z-index': 10002 });
 
     // Show resize handle
-    $('#editor-resize-handle').removeClass('hidden').toggleClass('float-right', self.settings.editorSplitDirection() === 'right');
+    $('#editor-resize-handle')
+      .removeClass('hidden')
+      .toggleClass(
+        'float-right',
+        self.settings.editorSplitDirection() === 'right',
+      );
 
     // Reveal/hide buttons
     $('#split-editor-button').addClass('hidden');
@@ -988,10 +1023,12 @@ export var App = function(name, version) {
     setTimeout(() => {
       self.editNode(editingNode);
     }, 250);
-  }
+  };
 
   this.editorSnapToggle = function() {
-    self.settings.editorSplitDirection((self.settings.editorSplitDirection() === 'right') ? 'left' : 'right')
+    self.settings.editorSplitDirection(
+      self.settings.editorSplitDirection() === 'right' ? 'left' : 'right',
+    );
 
     self.reopenEditor();
   };
@@ -1010,13 +1047,15 @@ export var App = function(name, version) {
     let splitEditorXOffset = 0;
 
     if (self.inEditor() && self.settings.editorSplit()) {
-      splitEditorXOffset = ($('#editor-form').width() / 2);
-      
-      if (self.settings.editorSplitDirection() === 'right') { splitEditorXOffset *= -1; }
+      splitEditorXOffset = $('#editor-form').width() / 2;
+
+      if (self.settings.editorSplitDirection() === 'right') {
+        splitEditorXOffset *= -1;
+      }
     }
 
     return splitEditorXOffset;
-  }
+  };
 
   // called by the "Edit in Visual Studio Code Text Editor" button
   // this sends a message to the extension telling it to open the node in a text editor
@@ -1032,11 +1071,13 @@ export var App = function(name, version) {
         payload: {
           title: node.title().trim(),
           tags: node.tags().trim(),
-          body: self.trimBodyLinks(node.body().trim())
-        }
+          body: self.trimBodyLinks(node.body().trim()),
+        },
       });
     } else {
-      console.error('Tried to open node in Visual Studio Code text editor but we\'re not in the Visual Studio Code extension');
+      console.error(
+        "Tried to open node in Visual Studio Code text editor but we're not in the Visual Studio Code extension",
+      );
     }
   };
 
@@ -1046,7 +1087,7 @@ export var App = function(name, version) {
 
   this.openNodeByTitle = function(nodeTitle) {
     self.makeNodeWithName(nodeTitle);
-    self.nodes().forEach(node => {
+    self.nodes().forEach((node) => {
       if (
         node
           .title()
@@ -1071,15 +1112,15 @@ export var App = function(name, version) {
 
   this.getSpellCheckSuggestionItems = function() {
     var wordSuggestions = suggest_word_for_misspelled(
-      self.editor.getSelectedText()
+      self.editor.getSelectedText(),
     );
     if (wordSuggestions) {
       var suggestionObject = {};
-      wordSuggestions.forEach(suggestion => {
+      wordSuggestions.forEach((suggestion) => {
         suggestionObject[suggestion] = {
           name: suggestion,
           icon: 'edit',
-          callback: key => {
+          callback: (key) => {
             self.insertTextAtCursor(key);
           },
         };
@@ -1104,11 +1145,11 @@ export var App = function(name, version) {
     });
     if (wordSuggestions.length > 0) {
       var suggestionObject = {};
-      wordSuggestions.forEach(suggestion => {
+      wordSuggestions.forEach((suggestion) => {
         suggestionObject[suggestion] = {
           name: suggestion,
           icon: 'edit',
-          callback: key => {
+          callback: (key) => {
             self.insertTextAtCursor(key);
           },
         };
@@ -1122,17 +1163,15 @@ export var App = function(name, version) {
   this.toggleSpellCheck = function() {
     // Timeout so spellcheck can toggle after the spelling check settings are updated
     setTimeout(function() {
-      if (self.settings.spellcheckEnabled())
-      enable_spellcheck();
-    else
-      disable_spellcheck();
+      if (self.settings.spellcheckEnabled()) enable_spellcheck();
+      else disable_spellcheck();
     }, 50);
   };
 
   this.toggleInvertColors = function() {
-    const cssOverwrite = self.settings.invertColorsEnabled() ?
-      { filter: 'invert(100%)' } :
-      { filter: 'invert(0%)' };
+    const cssOverwrite = self.settings.invertColorsEnabled()
+      ? { filter: 'invert(100%)' }
+      : { filter: 'invert(0%)' };
 
     $('#app').css(cssOverwrite);
     $('#app-bg').css(cssOverwrite);
@@ -1148,13 +1187,15 @@ export var App = function(name, version) {
       $('#grid-canvas').attr('width', width);
       $('#grid-canvas').attr('height', height);
       $('#gridSize').attr('disabled', false);
-      self.workspace.gridContext.strokeStyle = self.workspace.gridContext.fillStyle = $('.grid-canvas').css('color');
+      self.workspace.gridContext.strokeStyle = self.workspace.gridContext.fillStyle = $(
+        '.grid-canvas',
+      ).css('color');
     } else {
       $('#gridSize').attr('disabled', true);
     }
 
     app.workspace.updateGrid();
-  }
+  };
 
   this.toggleShowCounter = function() {
     if (self.settings.editorStatsEnabled()) {
@@ -1169,7 +1210,9 @@ export var App = function(name, version) {
   };
 
   this.toggleAutocompleteSuggestions = function() {
-    self.settings.autocompleteSuggestionsEnabled(!self.settings.autocompleteSuggestionsEnabled());
+    self.settings.autocompleteSuggestionsEnabled(
+      !self.settings.autocompleteSuggestionsEnabled(),
+    );
     self.updateEditorOptions();
   };
 
@@ -1184,7 +1227,7 @@ export var App = function(name, version) {
       enableLiveAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
       behavioursEnabled: app.settings.autoCloseBrackets(),
     });
-  }
+  };
 
   this.advanceStoryPlayMode = function(speed = 5) {
     if (!self.previewStory.finished) {
@@ -1217,7 +1260,9 @@ export var App = function(name, version) {
       });
       self.previewStory.emiter.on('startedNode', function(e) {
         if (self.isEditorSplit) {
-          self.workspace.warpToNode(self.getFirstFoundNode(e.title.toLowerCase().trim()));
+          self.workspace.warpToNode(
+            self.getFirstFoundNode(e.title.toLowerCase().trim()),
+          );
         }
       });
       self.previewStory.initYarn(
@@ -1229,7 +1274,7 @@ export var App = function(name, version) {
         'NVrichTextLabel',
         false,
         'commandDebugLabel',
-        self.playtestStyle
+        self.playtestStyle,
       );
     } else {
       //edit mode
@@ -1244,11 +1289,14 @@ export var App = function(name, version) {
   };
 
   this.gotoLastPlayNode = function() {
-    if (self.editing() && self.editing().title() !== self.previewStory.node.title) {
+    if (
+      self.editing() &&
+      self.editing().title() !== self.previewStory.node.title
+    ) {
       self.openNodeByTitle(self.previewStory.node.title);
     }
     self.editor.focus();
-  }
+  };
 
   // TODO: move to UI?
   this.togglePreviewMode = function(previewModeOverwrite) {
@@ -1265,7 +1313,10 @@ export var App = function(name, version) {
       //preview mode
       editor.style.display = 'none';
       editorPreviewer.style.display = 'block';
-      editorPreviewer.innerHTML = self.richTextFormatter.richTextToHtml(self.editing().body(), true);
+      editorPreviewer.innerHTML = self.richTextFormatter.richTextToHtml(
+        self.editing().body(),
+        true,
+      );
       editorPreviewer.scrollTop = self.editor.renderer.scrollTop;
     } else {
       //edit mode
@@ -1364,12 +1415,16 @@ export var App = function(name, version) {
     $('.app-info').show();
 
     app.ui.resetAppButtonsLocation();
-    if (self.isEditorInPlayMode) { self.togglePlayMode(false); }
-    if (self.isEditorInPreviewMode) { self.togglePreviewMode(false); }
+    if (self.isEditorInPlayMode) {
+      self.togglePlayMode(false);
+    }
+    if (self.isEditorInPreviewMode) {
+      self.togglePreviewMode(false);
+    }
   };
 
   this.convertMarkup = function() {
-    self.nodes().forEach( node => {
+    self.nodes().forEach((node) => {
       node.body(self.richTextFormatter.convert(node.body()));
     });
   };
@@ -1408,7 +1463,7 @@ export var App = function(name, version) {
             .indexOf(search) >= 0;
 
         if (matchTitle || matchBody || matchTags) {
-          node.active({ title: matchTitle, body: matchBody, tags: matchTags});
+          node.active({ title: matchTitle, body: matchBody, tags: matchTags });
           element.clearQueue();
           element.transition({ opacity: on }, 500);
         } else {
@@ -1452,13 +1507,13 @@ export var App = function(name, version) {
 
       node.updateLinks();
 
-      node.linkedTo().forEach(child => {
+      node.linkedTo().forEach((child) => {
         if (!updated.includes(child)) {
           toUpdate.push(child);
         }
       });
 
-      node.linkedFrom().forEach(parent => {
+      node.linkedFrom().forEach((parent) => {
         if (!updated.includes(parent)) {
           toUpdate.push(parent);
         }
@@ -1467,35 +1522,31 @@ export var App = function(name, version) {
   };
 
   this.updateTagsRepository = function() {
-    if (!self.mustUpdateTags)
-      return;
+    if (!self.mustUpdateTags) return;
 
     self.mustUpdateTags = false;
 
     const findFirstFreeId = () => {
-      const usedIds = self.tags().map( tag => tag.id );
-      for (let id = 1; ;++id)
-        if (!usedIds.includes(id))
-          return id;
+      const usedIds = self.tags().map((tag) => tag.id);
+      for (let id = 1; ; ++id) if (!usedIds.includes(id)) return id;
     };
 
     // Reset count
-    self.tags().forEach(tag => tag.count = 0);
+    self.tags().forEach((tag) => (tag.count = 0));
 
     // Recount tags and add new
-    self.nodes().forEach(node => {
-      Utils.uniqueSplit(node.tags(), ' ').forEach(tag => {
-        const found = self.tags().find(e => e.text == tag);
+    self.nodes().forEach((node) => {
+      Utils.uniqueSplit(node.tags(), ' ').forEach((tag) => {
+        const found = self.tags().find((e) => e.text == tag);
         if (found) {
           ++found.count;
-        }
-        else {
+        } else {
           const id = findFirstFreeId();
           self.tags.push({
             id: id,
             style: 'tag-style-' + id,
             text: tag,
-            count: 1
+            count: 1,
           });
         }
       });
@@ -1504,8 +1555,7 @@ export var App = function(name, version) {
     // Remove unused tags
     let i = self.tags().length;
     while (i--) {
-      if(self.tags()[i].count === 0)
-        self.tags().splice(i, 1);
+      if (self.tags()[i].count === 0) self.tags().splice(i, 1);
     }
   };
 
@@ -1541,12 +1591,12 @@ export var App = function(name, version) {
 
   this.titleExistsTwice = function(title) {
     return (
-      self.nodes().filter(node => node.title().trim() === title.trim()).length >
-      1
+      self.nodes().filter((node) => node.title().trim() === title.trim())
+        .length > 1
     );
   };
 
-  this.getFutureEditedNodeTitle = function(){
+  this.getFutureEditedNodeTitle = function() {
     // Ensure the title is unique
     const editorTitleElement = $('#editorTitle')[0];
     // Return the title that will be used when changes are applied
@@ -1555,7 +1605,7 @@ export var App = function(name, version) {
 
   this.getOtherNodeTitles = function() {
     var result = [];
-    self.nodes().forEach(node => {
+    self.nodes().forEach((node) => {
       if (!self.editing() || node.title() !== self.editing().title()) {
         result.push(node.title().trim());
       }
@@ -1568,27 +1618,27 @@ export var App = function(name, version) {
     text = text.replace(/\>/g, '&gt;');
     text = text.replace(
       /\&lt;\&lt;(.*?)\&gt;\&gt;/g,
-      '<p class="conditionbounds">&lt;&lt;</p><p class="condition">$1</p><p class="conditionbounds">&gt;&gt;</p>'
+      '<p class="conditionbounds">&lt;&lt;</p><p class="condition">$1</p><p class="conditionbounds">&gt;&gt;</p>',
     );
     text = text.replace(
       /\[\[([^\|]*?)\]\]/g,
-      '<p class="linkbounds">[[</p><p class="linkname">$1</p><p class="linkbounds">]]</p>'
+      '<p class="linkbounds">[[</p><p class="linkname">$1</p><p class="linkbounds">]]</p>',
     );
     text = text.replace(
       /\[\[([^\[\]]*?)\|([^\[\]]*?)\]\]/g,
-      '<p class="linkbounds">[[</p>$1<p style="color:red"><p class="linkbounds">|</p><p class="linkname">$2</p><p class="linkbounds">]]</p>'
+      '<p class="linkbounds">[[</p>$1<p style="color:red"><p class="linkbounds">|</p><p class="linkname">$2</p><p class="linkbounds">]]</p>',
     );
     text = text.replace(
       /[^:]\/\/(.*)?($|\n)/g,
-      '<span class="comment">//$1</span>\n'
+      '<span class="comment">//$1</span>\n',
     );
     text = text.replace(
       /\/\*((.|[\r\n])*)?\*\//gm,
-      '<span class="comment">/*$1*/</span>'
+      '<span class="comment">/*$1*/</span>',
     );
     text = text.replace(
       /\/\%((.|[\r\n])*)?\%\//gm,
-      '<span class="comment">/%$1%/</span>'
+      '<span class="comment">/%$1%/</span>',
     );
 
     // create a temporary document and remove all styles inside comments
@@ -1643,7 +1693,13 @@ export var App = function(name, version) {
   };
 
   this.getFirstFoundNode = function(search) {
-    return self.nodes().find(node => node.title().toLowerCase().trim() === search)
+    return self.nodes().find(
+      (node) =>
+        node
+          .title()
+          .toLowerCase()
+          .trim() === search,
+    );
   };
 
   this.searchWarp = function() {
