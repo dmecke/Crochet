@@ -19,7 +19,7 @@ define('ace/mode/yarn', [
       start: [
         {
           token: 'comment',
-          regex: '^\\/\\/.*$'
+          regex: '\/\/.*$'
         },
         {
           token: 'paren.lcomm',
@@ -117,29 +117,31 @@ define('ace/mode/yarn', [
             name: 'Paste',
             icon: 'paste',
             callback: () => app.data.triggerPasteClipboard()
-          },
-          sep1: '---------'
+          }
         };
         // add menu option to go to selected node if an option is selected
-        if (app.getTagBeforeCursor().match(/\|/g)) {
-          options.items['go to node'] = {
-            name: 'Edit node: ' + app.editor.getSelectedText(),
-            callback: () => {
-              const title = app.getFutureEditedNodeTitle();
-              // We add the node to visited nodes history before navigating to the next node
-              if (!app.nodeVisitHistory.includes(title)) {
-                app.nodeVisitHistory.push(title);
-              }
-              app.openNodeByTitle(app.editor.getSelectedText());
-            }
-          };
-        }
+        // FIXME: ADD ABILITY TO HIGHLIGHT NODES AND EDIT THEM FROM CONTEXT MENU FOR YARN 2.0 SPEC
+        // if (app.getTagBeforeCursor().match(/\|/g)) {
+        //   options.items.sep1 = '---------';
+        //   options.items['go to node'] = {
+        //     name: 'Edit node: ' + app.editor.getSelectedText(),
+        //     callback: () => {
+        //       const title = app.getFutureEditedNodeTitle();
+        //       // We add the node to visited nodes history before navigating to the next node
+        //       if (!app.nodeVisitHistory.includes(title)) {
+        //         app.nodeVisitHistory.push(title);
+        //       }
+        //       app.openNodeByTitle(app.editor.getSelectedText());
+        //     }
+        //   };
+        // }
         // suggest word corrections if the selected word is misspelled
         if (app.settings.spellcheckEnabled()) {
           var suggestedCorrections = app.getSpellCheckSuggestionItems();
           if (suggestedCorrections !== false) {
+            options.items.sep1 = '---------';
             options.items.corrections = {
-              name: 'Correct word',
+              name: 'Suggested Corrections',
               items: suggestedCorrections
             };
           }
@@ -147,8 +149,9 @@ define('ace/mode/yarn', [
         // suggest similar words - thesaurus.com sysnonyms and anthonyms
         var suggested = app.getThesaurusItems();
         if (suggested !== false) {
+          options.items.sep1 = '---------';
           options.items.corrections = {
-            name: 'Related words',
+            name: 'Related Words',
             items: suggested
           };
         }
@@ -163,6 +166,7 @@ define('ace/mode/yarn', [
       }
       // add option to add path of local image file between img tags
       if (app.getTagBeforeCursor().match(/\[img/g)) {
+        options.items.sep1 = '---------';
         options.items['Choose image'] = {
           name: 'Choose image',
           callback: () => {

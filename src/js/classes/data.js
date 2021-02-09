@@ -265,7 +265,6 @@ export const data = {
           readingBody = false;
           if (obj != null) {
             objects.push(obj);
-            console.log(obj);
             obj = null;
           }
         } else {
