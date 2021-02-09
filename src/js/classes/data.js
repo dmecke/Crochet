@@ -10,6 +10,7 @@ export const data = {
   editingType: ko.observable('json'),
   editingFolder: ko.observable(null),
   isDocumentDirty: ko.observable(false),
+  fileVersion: 2,
   restoreFromLocalStorage: ko.observable(true),
   lastStorageHost: ko.observable('LOCAL'), // GIST | LOCAL
   editingFileFolder: function(addSubPath = '') {
@@ -163,10 +164,10 @@ export const data = {
       showCancelButton: true,
     }).then((result) => {
       if (result.value === true) {
+        data.clearFileTags();
         data.readFile(file, filename, true);
         data.setNewFileStats(filename, file.path);
         app.refreshWindowTitle();
-        app.fileTags = {};
       }
     });
   },
@@ -239,36 +240,69 @@ export const data = {
       var obj = null;
       var index = 0;
       var readingBody = false;
+      var versionMatch = false;
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].trim().charAt(0) === '#') {
-          data.saveFileTag(lines[i].trim());
-        } else if (lines[i].trim() === '===') {
+          if (lines[i].trim().includes('#__PrivCrochet_version:' + data.fileVersion)) {
+            versionMatch = true;
+          } else {
+            app.fileTags.push(lines[i].slice(1));
+          }
+        } else if (readingBody) {
+          // process what we've read so far
+          if (!obj.position) {
+            obj.position = {
+              x: 0,
+              y: 0
+            }
+          }
+
+          // read rest of body
+          while(i < lines.length && lines[i] !== "===") {
+            obj.body += lines[i] + '\n';
+            i++;
+          }
           readingBody = false;
           if (obj != null) {
             objects.push(obj);
+            console.log(obj);
             obj = null;
           }
-        } else if (readingBody) {
-          obj.body += lines[i] + '\n';
         } else {
-          if (lines[i].indexOf('title:') > -1) {
+          if (lines[i].includes('title:')) {
             if (obj == null) obj = {};
-            obj.title = lines[i].substr(7, lines[i].length - 7);
-          } else if (lines[i].indexOf('position:') > -1) {
-            if (obj == null) obj = {};
-            var xy = lines[i].substr(9, lines[i].length - 9).split(',');
-            obj.position = { x: Number(xy[0].trim()), y: Number(xy[1].trim()) };
-          } else if (lines[i].indexOf('colorID:') > -1) {
-            if (obj == null) obj = {};
-            obj.colorID = Number(
-              lines[i].substr(9, lines[i].length - 9).trim(),
-            );
-          } else if (lines[i].indexOf('tags:') > -1) {
-            if (obj == null) obj = {};
-            obj.tags = lines[i].substr(6, lines[i].length - 6);
+            obj.title = lines[i].substr(6).trim();
           } else if (lines[i].trim() == '---') {
             readingBody = true;
             obj.body = '';
+          } else if (versionMatch === false && lines[i].includes('tags:')) {
+            if (obj == null) obj = {};
+            //obj.tags = lines[i].substr(5).trim();
+            let tags = lines[i].substr(5).trim();
+            let tagsArray = [];
+            tags.split(' ').forEach((e, index) => {
+              if (e !== '') {
+                tagsArray.push({
+                  e: ''
+                });
+              }
+            })
+            obj.tags = tagsArray;
+          } else {
+            let positionString = (versionMatch) ? '__PrivCrochet_position:' : 'position:';
+            let colorIDString = (versionMatch) ? '__PrivCrochet_colorID:' : 'colorID:';
+            if (lines[i].includes(positionString)) {
+              if (obj == null) obj = {};
+              var xy = lines[i].substr(positionString.length + 1).trim().split(',');
+              obj.position = { x: Number(xy[0].trim()), y: Number(xy[1].trim()) };
+            } else if (lines[i].includes(colorIDString)) {
+              if (obj == null) obj = {};
+              obj.colorID = Number(
+                lines[i].substr(colorIDString.length).trim(),
+              );
+            } else {
+              // tags
+            }
           }
         }
       }
@@ -369,48 +403,13 @@ export const data = {
   saveFileTags: function(content) {
     let lines = content.split(/\r?\n/);
     lines.forEach(e => {
-      if (e.length > 1) {
-        let name;
-        let content;
-        if (e.includes(':')) {
-          name = e.match(/(?<=\#)(.*?)(?=\:)/)[0];
-          content = e.substr(e.indexOf(':') + 1).trim();
-        } else {
-          name = e.substr(e.indexOf('#') + 1)
-          content = true;
-        }
-        if (name && content) {
-          app.fileTags[name] = content;
-        }
-      }
+      let tag = e.slice(1);
+      app.fileTags.push(tag);
     })
-  },
-  saveFileTag: function(line) {
-    if (line.length > 1) {
-      let name;
-      let content;
-      if (line.includes(':')) {
-        name = line.match(/(?<=\#)(.*?)(?=\:)/)[0];
-        content = line.substr(line.indexOf(':') + 1).trim();
-      } else {
-        name = line.substr(line.indexOf('#') + 1)
-        content = true;
-      }
-      if (name && content) {
-        app.fileTags[name] = content;
-      }
-    }
+    data.trySaveCurrent();
   },
   clearFileTags: function() {
-    app.fileTags = {};
-    app.ui.fileTagsString = '';
-  },
-  convertFileTagsToString: function() {
-    let data = '';
-    for (const name in app.fileTags) {
-      data = data.concat('#' + name + ': ' + app.fileTags[name] + '\n');
-    }
-    return data;
+    app.fileTags = [];
   },
   getNodeFromObject: function(object) {
     return new Node({
@@ -422,6 +421,14 @@ export const data = {
       y: parseInt(object.position.y),
     });
   },
+  getNodesFromObjects: function(objects) {
+    const appNodes = [];
+    if (!objects) return [];
+    objects.forEach((object) => {
+      appNodes.push(data.getNodeFromObject(object));
+    });
+    return appNodes;
+  },
   getNodeAsObject: function(node) {
     return {
       title: node.title(),
@@ -431,15 +438,6 @@ export const data = {
       colorID: node.colorID(),
     };
   },
-  getNodesFromObjects: function(objects) {
-    const appNodes = [];
-    if (!objects) return [];
-    objects.forEach((object) => {
-      appNodes.push(data.getNodeFromObject(object));
-    });
-    return appNodes;
-  },
-
   getNodesAsObjects: function() {
     const nodesObjects = [];
     const nodes = app.nodes();
@@ -456,13 +454,16 @@ export const data = {
     if (type == FILETYPE.JSON) {
       output = JSON.stringify(content, null, '\t');
     } else if (type == FILETYPE.YARN) {
-      output += data.convertFileTagsToString();
+      output += "#__PrivCrochet_version:" + data.fileVersion + '\n';
+      app.fileTags.forEach(tag => {
+        output += "#" + tag + '\n';
+      });
       for (let i = 0; i < content.length; i++) {
         output += 'title: ' + content[i].title + '\n';
         output += 'tags: ' + content[i].tags + '\n';
-        output += 'colorID: ' + content[i].colorID + '\n';
+        output += '__PrivCrochet_colorID: ' + content[i].colorID + '\n';
         output +=
-          'position: ' +
+          '__PrivCrochet_position: ' +
           content[i].position.x +
           ',' +
           content[i].position.y +

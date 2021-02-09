@@ -128,7 +128,7 @@ export const UI = function(app) {
         input: 'fileTagsInput'
       },
       inputPlaceholder: '#tag_name: tag_content',
-      inputValue: app.data.convertFileTagsToString(),
+      inputValue: self.convertFileTagsToString(),
       allowOutsideClick: false,
       allowEnterKey: false,
       allowEscapeKey: false,
@@ -138,7 +138,7 @@ export const UI = function(app) {
       inputValidator: (value) => {
         return new Promise((resolve) => {
           let lines = value.match(/^.*((\r\n|\n|\r)|$)/gm);
-          let nameValues = [];
+          let tags = [];
           lines.forEach((e, index) => {
             if (e.length === 0 || e === "\n") {
               if(lines.length === 1) {
@@ -151,16 +151,11 @@ export const UI = function(app) {
             } else if (e.length <= 1) {
               resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>File tag names need to be longer than 0 characters.');
             } else {
-              let name = '';
-              if (e.includes(':')) {
-                name = e.match(/(?<=\#)(.*?)(?=\:)/)[0].trim();
+              let tag = e.slice(1);
+              if (tags.includes(tag)) {
+                resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>Duplicate tag detected');
               } else {
-                name = e.substr(e.indexOf('#') + 1).trim();
-              }
-              if (nameValues.includes(name)) {
-                resolve('ERROR ON LINE ' + index + '</br>' + e + '</br>Duplicate tag names used');
-              } else {
-                nameValues.push(name);
+                tags.push(tag);
               }
             }
           })
@@ -169,7 +164,7 @@ export const UI = function(app) {
       }
     }).then((result) => {
       if (result.value) {
-        app.fileTags = {};
+        app.data.clearFileTags();
         app.data.saveFileTags(result.value);
         self.notification.fire({
           icon: 'success',
@@ -177,6 +172,14 @@ export const UI = function(app) {
         });
       }
     });
+  }
+
+  this.convertFileTagsToString = function() {
+    let data = '';
+    app.fileTags.forEach(tag => {
+      data += '#' + tag + '\n';
+    });
+    return data;
   }
 
   // isDialogOpen

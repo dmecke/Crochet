@@ -211,7 +211,7 @@ export const Input = function(app) {
 
       if ((e.metaKey || e.ctrlKey) && e.shiftKey) {
         switch (e.keyCode) {
-        case Key.S: app.data.trySave(FILETYPE.JSON); break; // ctrl+shift+s
+        //case Key.S: app.data.trySave(FILETYPE.JSON); break; // ctrl+shift+s
         case Key.A: app.data.tryAppend(); break; // ctrl+shift+a
         }
       }

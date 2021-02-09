@@ -202,7 +202,7 @@
 
       <div id="editor-form" class="form">
         <input type="text" id="editorTitle" class="title" oninput="app.validateTitle()" data-bind="value: app.editing().title;" onfocus="app.togglePreviewMode(true)" placeholder="Title">
-        <input type="text" id="editorTags" data-bind="value: app.editing().tags;" onfocus="app.togglePreviewMode(true)" placeholder="Tags(use spaces)">
+        <input type="text" id="editorTags" data-bind="value: app.editing().tags;" onfocus="app.togglePreviewMode(true)" placeholder="Header Tags (tagName:tagContent, space separated)">
 
         <div class="bbcode-toolbar">
           <button class="bbcode-button" onclick="app.openLastEditedNode()" title="Go Back To Last Edited Node" onfocus="app.togglePreviewMode(false)">
@@ -556,21 +556,8 @@
   <!-- Hidden fields, file dialogs, and elements -->
   <div class="hidden">
     <input type="file" id="open-image" accept=".jpg,.jpeg,.png,.gif,.bmp" />
-    <input type="file" id="open-file" multiple="true" accept=".yarn,.txt,.xml,.json,.twee,.tw2" />
-    <input type="file" id="open-folder" webkitdirectory directory />
-    <input type="file" id="save-file" nwsaveas="filename.txt" />
-  </div>
-  </div> <!-- settgins-column -->
-  </div> <!-- settgins-row -->
-  </div> <!-- settgins-form -->
-  </div> <!-- settgins-dialog -->
-  <!-- /ko -->
-  </div>
-
-  <!-- Hidden fields, file dialogs, and elements -->
-  <div class="hidden">
-    <input type="file" id="open-image" accept=".jpg,.jpeg,.png,.gif,.bmp" />
-    <input type="file" id="open-file" multiple="true" accept=".yarn,.txt,.xml,.json,.twee,.tw2" />
+    <!-- <input type="file" id="open-file" multiple="true" accept=".yarn,.txt,.xml,.json,.twee,.tw2" /> -->
+    <input type="file" id="open-file" multiple="true" accept=".yarn,.txt" />
     <input type="file" id="open-folder" webkitdirectory directory />
     <input type="file" id="save-file" nwsaveas="filename.txt" />
   </div>
