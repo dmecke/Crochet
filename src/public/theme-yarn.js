@@ -14,10 +14,16 @@ color: #000;\
 .ace-yarn .ace_comment {\
 color: #00c171;\
 }\
+.ace-yarn .ace_hashtag {\
+color: #00c171;\
+}\
 .ace-yarn .ace_keyword {\
 color: #e93ecf;\
 }\
 .ace-yarn .ace_variable {\
+color: #e93ecf;\
+}\
+.ace-yarn .ace_function {\
 color: #e93ecf;\
 }\
 .ace-yarn .ace_numeric {\

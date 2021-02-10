@@ -276,17 +276,18 @@ export const data = {
             obj.body = '';
           } else if (versionMatch === false && lines[i].includes('tags:')) {
             if (obj == null) obj = {};
-            //obj.tags = lines[i].substr(5).trim();
-            let tags = lines[i].substr(5).trim();
-            let tagsArray = [];
-            tags.split(' ').forEach((e, index) => {
-              if (e !== '') {
-                tagsArray.push({
-                  e: ''
-                });
-              }
-            })
-            obj.tags = tagsArray;
+            obj.tags = lines[i].substr(5).trim();
+            // FIXME: CONVERT OLD TAGS TO NEW TAGS
+            // let tags = lines[i].substr(5).trim();
+            // let tagsArray = [];
+            // tags.split(' ').forEach((e, index) => {
+            //   if (e !== '') {
+            //     tagsArray.push({
+            //       e: ''
+            //     });
+            //   }
+            // })
+            // obj.tags = tagsArray;
           } else {
             let positionString = (versionMatch) ? '__PrivCrochet_position:' : 'position:';
             let colorIDString = (versionMatch) ? '__PrivCrochet_colorID:' : 'colorID:';
@@ -300,7 +301,7 @@ export const data = {
                 lines[i].substr(colorIDString.length).trim(),
               );
             } else {
-              // tags
+              // FIXME: READ IN TAGS
             }
           }
         }

@@ -18,6 +18,10 @@ define('ace/mode/yarn', [
     this.$rules = {
       start: [
         {
+          token: 'hashtag',
+          regex: '#([^\/\/]+)'
+        },
+        {
           token: 'comment',
           regex: '\/\/.*$'
         },
@@ -62,6 +66,10 @@ define('ace/mode/yarn', [
           next: 'jump'
         },
         {
+          token: 'function',
+          regex: '([\\w|\.]+)'
+        },
+        {
           token: 'string',
           regex: '"[^"\\\r\n]*(?:\\.[^"\\\r\n]*)*"'
         },
@@ -84,7 +92,8 @@ define('ace/mode/yarn', [
         },
         {
           token: 'expression_open',
-          regex: '\\{'
+          regex: '\\{',
+          next: 'expression'
         },
         {
           token: 'expression_close',

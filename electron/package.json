@@ -43,7 +43,8 @@
   "build": {
     "productName": "Crochet",
     "files": [
-      "**/*", "build/icon.*"
+      "**/*",
+      "build/icon.*"
     ],
     "fileAssociations": {
       "ext": "yarn",

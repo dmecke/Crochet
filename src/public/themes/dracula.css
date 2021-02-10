@@ -627,6 +627,10 @@ input.ace_search_field {
   color: #A2A5CC;
 }
 
+.ace-yarn .ace_function {
+  color: #50fa7b;
+}
+
 .ace-yarn .ace_nametag {
   color: #A2A5CC;
 }
@@ -637,6 +641,10 @@ input.ace_search_field {
 
 .ace-yarn .ace_comment {
   color: #6272a4;
+}
+
+.ace-yarn .ace_hashtag {
+  color: #ffb86c;
 }
 
 .story-playtest-bubble {
