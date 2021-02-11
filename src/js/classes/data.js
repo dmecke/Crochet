@@ -87,6 +87,7 @@ export const data = {
   loadAppStateFromLocalStorage: function() {
     if (!data.restoreFromLocalStorage()) return;
 
+    console.log('RESTORING APP FROM LOCAL STORAGE');
     const storage = app.settings.storage;
     const appState = JSON.parse(storage.getItem('appState'));
     if (appState) {

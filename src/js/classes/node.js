@@ -321,22 +321,15 @@ export let Node = function(options = {}) {
   };
 
   this.getLinksInNode = function(node) {
-    let links = (node || self).body().match(/\[\[(.*?)\]\]/g);
+    let matches = [...(node || self).body().matchAll(/(?:\<\<jump)\s+(.*)(?=\>\>)/g)];
+    
+    if (Array.isArray(matches) || !matches.length) {
+      let links = [];
 
-    if (links != undefined) {
-      let exists = {};
-      for (let i = links.length - 1; i >= 0; i--) {
-        links[i] = links[i].substr(2, links[i].length - 4).trim(); //.toLowerCase();
+      matches.forEach(match => {
+        links.push(match[1]);
+      });
 
-        if (links[i].indexOf('|') >= 0) {
-          links[i] = links[i].split('|')[1];
-        }
-
-        if (exists[links[i]] != undefined) {
-          links.splice(i, 1);
-        }
-        exists[links[i]] = true;
-      }
       return links;
     } else {
       return undefined;

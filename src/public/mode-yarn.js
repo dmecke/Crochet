@@ -46,6 +46,10 @@ define('ace/mode/yarn', [
       ],
       expression: [
         {
+          token: 'comment',
+          regex: '\/\/.*$'
+        },
+        {
           token: 'variable',
           regex: '\\$\\w*'
         },
@@ -57,17 +61,21 @@ define('ace/mode/yarn', [
       ],
       command: [
         {
-          token: 'keyword',
-          regex: '(stop|set|declare|if|else|elseif|endif)',
+          token: 'comment',
+          regex: '\/\/.*$'
         },
         {
           token: 'keyword',
-          regex: 'jump',
+          regex: '(stop|set|declare|if|else|elseif|endif)\\s+',
+        },
+        {
+          token: 'keyword',
+          regex: 'jump\\s+',
           next: 'jump'
         },
         {
           token: 'function',
-          regex: '([\\w|\.]+)'
+          regex: '(?<=^[<<]*)\\w+'
         },
         {
           token: 'string',
@@ -102,9 +110,11 @@ define('ace/mode/yarn', [
       ],
       jump: [
         {
+          token: 'comment',
+          regex: '\/\/.*$'
+        },
+        {
           token: function(value) {
-            console.log(app.getOtherNodeTitles());
-            console.log(value.replace(/[ >>]+/g, ''));
             if (app.getOtherNodeTitles().includes(value.replace(/[ >>]+/g, ''))) {
               return 'node_name'
             } else {
