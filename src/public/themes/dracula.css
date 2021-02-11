@@ -647,6 +647,10 @@ input.ace_search_field {
   color: #ffb86c;
 }
 
+.ace-yarn .ace_indent-guide {
+  filter: opacity(0);
+}
+
 .story-playtest-bubble {
   background: #6272a4;
   color: #f8f8f2;

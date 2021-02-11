@@ -41,7 +41,7 @@ define('ace/mode/yarn', [
         },
         {
           token: 'nametag',
-          regex: '.+(?=:)'
+          regex: '.+\\S(?=:)'
         }
       ],
       expression: [
@@ -66,7 +66,11 @@ define('ace/mode/yarn', [
         },
         {
           token: 'keyword',
-          regex: '(stop|set|declare|if|else|elseif|endif)\\s+',
+          regex: '(set|declare|if|elseif)\\s+',
+        },
+        {
+          token: 'keyword',
+          regex: '(stop|else|endif)',
         },
         {
           token: 'keyword',
@@ -253,6 +257,6 @@ define('ace/mode/yarn', [
   app.editor.setOptions({
     enableBasicAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
     enableLiveAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
-    behavioursEnabled: app.settings.autoCloseBrackets(),
+    behavioursEnabled: app.settings.autoCloseBrackets()
   });
 });
