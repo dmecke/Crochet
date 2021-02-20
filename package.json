@@ -3,7 +3,7 @@
   "description": "An editor for Yarn files. Forked from YarnEditor.",
   "license": "MIT",
   "author": "@FaultyFunctions",
-  "homepage": "https://github.com/FaultyFunctions/Crochet",
+  "homepage": "https://faultyfunctions.github.io/Crochet/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FaultyFunctions/Crochet.git"
