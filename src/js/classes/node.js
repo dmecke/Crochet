@@ -58,7 +58,7 @@ export let Node = function(options = {}) {
 
     let result = app.getHighlightedText(this.body());
     result = app.richTextFormatter.richTextToHtml(result);
-    result = result.substr(0, ClipNodeTextLength);
+    //result = result.substr(0, ClipNodeTextLength);
     return result;
   }, this);
 

@@ -592,11 +592,13 @@ input.ace_search_field {
 }
 
 .ace-yarn .ace_command_open, .ace-yarn .ace_command_close {
-  color: #ff79c6;
+  color: #f8f8f2;
+  font-weight: normal;
 }
 
 .ace-yarn .ace_expression_open, .ace-yarn .ace_expression_close {
-  color: #ff79c6;
+  color: #f8f8f2;
+  font-weight: normal;
 }
 
 .ace-yarn .ace_string {
@@ -649,6 +651,35 @@ input.ace_search_field {
 
 .ace-yarn .ace_indent-guide {
   filter: opacity(0);
+}
+
+.comment {
+  color: #6272a4;
+}
+
+.command_tag {
+  color: #f8f8f2
+}
+
+.keyword {
+  color: #ff79c6;
+  font-weight: bold;
+}
+
+.hashtag {
+  color: #ffb86c;
+}
+
+.variable {
+  color: #A2A5CC;
+}
+
+.string {
+  color: #f1fa8c;
+}
+
+.expression_tag {
+  color: #f8f8f2;
 }
 
 .story-playtest-bubble {

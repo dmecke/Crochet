@@ -1,6 +1,7 @@
 /* eslint-disable jquery/no-ajax */
 const path = require('path');
 const saveAs = require('file-saver');
+import { tag } from 'synonyms/dictionary';
 import { Node } from './node';
 import { Utils, FILETYPE } from './utils';
 
@@ -10,7 +11,7 @@ export const data = {
   editingType: ko.observable('json'),
   editingFolder: ko.observable(null),
   isDocumentDirty: ko.observable(false),
-  fileVersion: 2,
+  fileVersion: 1,
   restoreFromLocalStorage: ko.observable(true),
   lastStorageHost: ko.observable('LOCAL'), // GIST | LOCAL
   editingFileFolder: function(addSubPath = '') {
@@ -33,6 +34,7 @@ export const data = {
     data.lastStorageHost('LOCAL');
     data.isDocumentDirty(true);
     app.refreshWindowTitle();
+    data.clearFileTags();
   },
   askForFileName: function() {
     Swal.fire({
@@ -165,6 +167,7 @@ export const data = {
       showCancelButton: true,
     }).then((result) => {
       if (result.value === true) {
+        if (app.editing() !== null) { app.closeEditor(); }
         data.clearFileTags();
         data.readFile(file, filename, true);
         data.setNewFileStats(filename, file.path);
@@ -238,10 +241,12 @@ export const data = {
       }
     } else if (type == FILETYPE.YARN) {
       var lines = content.split(/\r?\n/);
-      var obj = null;
+      var obj = {};
+      var tags = [];
       var index = 0;
       var readingBody = false;
       var versionMatch = false;
+      var crochetTagsFound = false;
       for (let i = 0; i < lines.length; i++) {
         if (lines[i].trim().charAt(0) === '#') {
           if (lines[i].trim().includes('#__PrivCrochet_version:' + data.fileVersion)) {
@@ -258,57 +263,63 @@ export const data = {
             }
           }
 
+          // Read in tags
+          if (crochetTagsFound === false && tags.length > 0) {
+            obj.tags = '';
+            tags.forEach(tag => {
+              obj.tags += tag + ' ';
+            })
+            obj.tags = obj.tags.trim();
+          } else if (crochetTagsFound && tags.length > obj.tags.split(' ').length) {
+            // Add tag to private if it doesn't exist in there already
+            tags.forEach(tag => {
+              obj.tags += ' ';
+              if (obj.tags.includes(tag) === false) {
+                obj.tags += tag + ' ';
+              }
+              obj.tags = obj.tags.trim();
+            })
+          }
+          crochetTagsFound = false;
+          tags = [];
+
           // read rest of body
           while(i < lines.length && lines[i] !== "===") {
             obj.body += lines[i] + '\n';
             i++;
           }
           readingBody = false;
-          if (obj != null) {
+
+          if (!$.isEmptyObject(obj)) {
             objects.push(obj);
-            obj = null;
+            obj = {};
           }
         } else {
           if (lines[i].includes('title:')) {
-            if (obj == null) obj = {};
             obj.title = lines[i].substr(6).trim();
           } else if (lines[i].trim() == '---') {
             readingBody = true;
             obj.body = '';
           } else if (versionMatch === false && lines[i].includes('tags:')) {
-            if (obj == null) obj = {};
             obj.tags = lines[i].substr(5).trim();
-            // FIXME: CONVERT OLD TAGS TO NEW TAGS
-            // let tags = lines[i].substr(5).trim();
-            // let tagsArray = [];
-            // tags.split(' ').forEach((e, index) => {
-            //   if (e !== '') {
-            //     tagsArray.push({
-            //       e: ''
-            //     });
-            //   }
-            // })
-            // obj.tags = tagsArray;
           } else {
             let positionString = (versionMatch) ? '__PrivCrochet_position:' : 'position:';
             let colorIDString = (versionMatch) ? '__PrivCrochet_colorID:' : 'colorID:';
             if (lines[i].includes(positionString)) {
-              if (obj == null) obj = {};
               var xy = lines[i].substr(positionString.length + 1).trim().split(',');
               obj.position = { x: Number(xy[0].trim()), y: Number(xy[1].trim()) };
             } else if (lines[i].includes(colorIDString)) {
-              if (obj == null) obj = {};
               obj.colorID = Number(
                 lines[i].substr(colorIDString.length).trim(),
               );
+            } else if (lines[i].includes('__PrivCrochet_tags:')) {
+              obj.tags = lines[i].substr(19).trim();
+              crochetTagsFound = true;
             } else {
-              // FIXME: READ IN TAGS
+              tags.push(lines[i]);
             }
           }
         }
-      }
-      if (obj != null) {
-        objects.push(obj);
       }
     } else if (type == FILETYPE.TWEE || type == FILETYPE.TWEE2) {
       var lines = content.split('\n');
@@ -392,14 +403,8 @@ export const data = {
     data.getNodesFromObjects(objects).forEach((node) => app.nodes.push(node));
 
     app.updateNodeLinks();
+    app.updateTagsRepository();
     app.workspace.warpToNodeByIdx(0);
-
-    // Callback for embedding in other webapps
-    var event = new CustomEvent('yarnLoadedData');
-    event.document = document;
-    event.data = data;
-    event.app = app;
-    window.parent.dispatchEvent(event);
   },
   saveFileTags: function(content) {
     let lines = content.split(/\r?\n/);
@@ -460,8 +465,6 @@ export const data = {
         output += "#" + tag + '\n';
       });
       for (let i = 0; i < content.length; i++) {
-        output += 'title: ' + content[i].title + '\n';
-        output += 'tags: ' + content[i].tags + '\n';
         output += '__PrivCrochet_colorID: ' + content[i].colorID + '\n';
         output +=
           '__PrivCrochet_position: ' +
@@ -469,6 +472,17 @@ export const data = {
           ',' +
           content[i].position.y +
           '\n';
+        output += '__PrivCrochet_tags: ' + content[i].tags + '\n';
+        let tags = content[i].tags.split(' ');
+        tags.forEach((tag) => {
+          if (tag === '') { return; }
+          if (!RegExp('[:]').test(tag)) {
+            output += tag + ':\n'
+          } else {
+            output += tag + '\n'
+          }
+        })
+        output += 'title: ' + content[i].title + '\n';
         output += '---\n';
         output += content[i].body;
         var body = content[i].body;
@@ -756,7 +770,12 @@ export const data = {
         app.refreshWindowTitle();
       });
     } else if (!data.editingPath()) {
-      
+      data.saveAppStateToLocalStorage();
+      Swal.fire({
+        title: 'Saved to Internal Storage Only!',
+        text: 'Please export the file and re-open it to ensure changes are saved to your disk. If you don\'t, internal storage will be overwritten when you open another file and your changes will be lost.',
+        icon: 'info',
+      });
     } else if (data.editingPath().length > 0 && data.editingType().length > 0) {
       data.saveTo(data.editingPath(), data.getSaveData(data.editingType()));
     }

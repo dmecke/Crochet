@@ -1,7 +1,7 @@
 {
   "name": "crochet",
   "main": "main.js",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "license": "MIT",
   "author": "@FaultyFunctions",
   "description": "An editor for Yarn files. Forked from YarnEditor.",

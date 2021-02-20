@@ -9,46 +9,49 @@ color: #AAA;\
 }\
 .ace-yarn  {\
 background: #fff;\
-color: #000;\
+color: #4d4d4c;\
 }\
 .ace-yarn .ace_comment {\
-color: #00c171;\
+color: #8e908c;\
 }\
 .ace-yarn .ace_hashtag {\
-color: #00c171;\
+color: #de935f;\
 }\
 .ace-yarn .ace_keyword {\
-color: #e93ecf;\
+color: #8959a8;\
+font-weight: bold;\
 }\
 .ace-yarn .ace_variable {\
-color: #e93ecf;\
+color: #c82829;\
 }\
 .ace-yarn .ace_function {\
-color: #e93ecf;\
+color: #4271ae;\
 }\
 .ace-yarn .ace_numeric {\
-color: #e93ecf;\
+color: #f5871f;\
 }\
 .ace-yarn .ace_boolean {\
-color: #e93ecf;\
+color: #f5871f;\
 }\
 .ace-yarn .ace_shortcut {\
-color: #e93ecf;\
+color: #3e999f;\
 }\
 .ace-yarn .ace_string {\
-color: #e93ecf;\
+color: #718c00;\
 }\
 .ace-yarn .ace_nametag {\
-color: #e93ecf;\
+color: #3e999f;\
 }\
 .ace-yarn .ace_node_name {\
-color: #e93ecf;\
+color: #c82829;\
 }\
 .ace-yarn .ace_command_open, .ace-yarn .ace_command_close {\
-color: #e00ec0;\
+color: #4d4d4c;\
+font-weight: bold;\
 }\
 .ace-yarn .ace_expression_open, .ace-yarn .ace_expression_close {\
-color: #e00ec0;\
+color: #4d4d4c;\
+font-weight: bold;\
 }\
 .ace-yarn .ace_variable.ace_instance {\
 color: teal;\
@@ -57,10 +60,10 @@ color: teal;\
 color: black;\
 }\
 .ace-yarn .ace_marker-layer .ace_active-line {\
-background: rgb(255, 255, 204);\
+background: #efefef;\
 }\
 .ace-yarn .ace_marker-layer .ace_selection {\
-background: rgb(181, 213, 255);\
+background: #d6d6d6;\
 }\
 .ace-yarn.ace_multiselect .ace_selection.ace_start {\
 box-shadow: 0 0 3px 0px white;\

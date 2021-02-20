@@ -17,6 +17,7 @@ import { data } from './data';
 import { yarnRender } from './renderer';
 import { Utils, FILETYPE } from './utils';
 import { RichTextFormatter } from './richTextFormatter';
+import Swal from 'sweetalert2'
 
 // TODO: refactoring proposals
 //
@@ -79,7 +80,6 @@ export var App = function(name, version) {
   this.tags = ko.observableArray([]);
   this.fileTags = [];
   this.mustRefreshNodes = ko.observable();
-  this.mustUpdateTags = true;
   this.nodeHistory = [];
   this.nodeFuture = [];
   this.editingHistory = [];
@@ -504,26 +504,61 @@ export var App = function(name, version) {
     }
   };
 
-  this.validateTitle = function() {
+  this.validateTitle = function(e) {
     var enteredValue = document.getElementById('editorTitle').value;
     var editorTitle = $('#editorTitle');
-    if (
-      self.getOtherNodeTitles().includes(enteredValue) ||
-      self.titleExistsTwice(enteredValue)
-    ) {
+    const swalError = Swal.mixin({
+      icon: 'error',
+      title: 'Title Error'
+    });
+    const refocusTitle = function() {
+      if (self.editing() !== null) {
+        editorTitle.trigger('focus');
+      }
+    }
+    if (self.getOtherNodeTitles().includes(enteredValue) || self.titleExistsTwice(enteredValue)) {
       editorTitle.attr('class', 'title title-error');
-      editorTitle.attr('title', 'Another node has the same title');
-    } else if (!RegExp('^[a-z0-9]+$', 'i').test(enteredValue)) {
+      editorTitle.attr('title', 'Two nodes cannot share the same title.');
+      editorTitle.on('focusout', () => {
+        swalError.fire({
+          text: 'Two nodes cannot share the same title.'
+        }).then(() => {
+          refocusTitle();
+        });
+      })
+    } else if (RegExp('^[\\u0000-\\u0020]+$', 'i').test(enteredValue)) {
       editorTitle.attr('class', 'title title-error');
-      editorTitle.attr(
-        'title',
-        'Only upper or lower case letters and numbers are allowed in a node title.',
-      );
+      editorTitle.attr('title', 'Invalid character in title.');
+      editorTitle.on('focusout', () => {
+        swalError.fire({
+          text: 'Invalid character in title.'
+        }).then(() => {
+          refocusTitle();
+        })
+      })
+    } else if (enteredValue.length === 0) {
+      editorTitle.attr('class', 'title title-error');
+      editorTitle.attr('title', 'Titles must contain one or more characters.');
+      editorTitle.on('focusout', () => {
+        swalError.fire({
+          text: 'Title must be greater than 0 character in length.'
+        }).then(() => {
+          refocusTitle();
+        })
+      })
     } else {
       editorTitle.removeAttr('title');
       editorTitle.removeClass('title-error');
+      editorTitle.off('focusout');
     }
   };
+
+  this.validateTags = function() {
+    var editorTagElement = $('#editorTags')
+    var enteredValue = editorTagElement.val().replace(/\s+/g, ' ').replace(/^\s+/g, '');
+    editorTagElement.val(enteredValue);
+    self.updateTagsRepository();
+  }
 
   this.refreshWindowTitle = function() {
     let title = '';
@@ -822,8 +857,6 @@ export var App = function(name, version) {
 
     self.editing(node);
 
-    self.mustUpdateTags = true;
-
     $('#node-editor-background')
       .css({ opacity: 0 })
       .transition({ opacity: 1 }, 250);
@@ -929,6 +962,7 @@ export var App = function(name, version) {
     self.toggleShowCounter();
     self.toggleSpellCheck();
     self.validateTitle(); // warn if title already exists
+    self.validateTags();
     self.updateEditorStats();
     self.updateEditorOptions();
 
@@ -1404,6 +1438,7 @@ export var App = function(name, version) {
 
   this.closeEditor = function() {
     self.editing().undoManager = self.editor.session.getUndoManager();
+
     $('#node-editor-background').transition({ opacity: 0 }, 250);
     $('#node-editor').transition({ y: '-100', opacity: 0 }, 250, function(e) {
       self.editing(null);
@@ -1522,10 +1557,6 @@ export var App = function(name, version) {
   };
 
   this.updateTagsRepository = function() {
-    if (!self.mustUpdateTags) return;
-
-    self.mustUpdateTags = false;
-
     const findFirstFreeId = () => {
       const usedIds = self.tags().map((tag) => tag.id);
       for (let id = 1; ; ++id) if (!usedIds.includes(id)) return id;
@@ -1617,60 +1648,58 @@ export var App = function(name, version) {
     text = text.replace(/\</g, '&lt;');
     text = text.replace(/\>/g, '&gt;');
     text = text.replace(
-      /\&lt;\&lt;(.*?)\&gt;\&gt;/g,
-      '<p class="conditionbounds">&lt;&lt;</p><p class="condition">$1</p><p class="conditionbounds">&gt;&gt;</p>',
+      /(["|'].*?["|'])/g,
+      '<p class="string">$1</p>'
     );
     text = text.replace(
-      /\[\[([^\|]*?)\]\]/g,
-      '<p class="linkbounds">[[</p><p class="linkname">$1</p><p class="linkbounds">]]</p>',
+      /(&lt;&lt;|&gt;&gt;)/g,
+      '<p class="command_tag">$1</p>'
     );
     text = text.replace(
-      /\[\[([^\[\]]*?)\|([^\[\]]*?)\]\]/g,
-      '<p class="linkbounds">[[</p>$1<p style="color:red"><p class="linkbounds">|</p><p class="linkname">$2</p><p class="linkbounds">]]</p>',
+      /(\{|\})/g,
+      '<p class="expression_tag">$1</p>'
     );
     text = text.replace(
-      /[^:]\/\/(.*)?($|\n)/g,
-      '<span class="comment">//$1</span>\n',
+      /#([^\/\/]+)/g,
+      '<p class="hashtag">#$1</p>'
     );
     text = text.replace(
-      /\/\*((.|[\r\n])*)?\*\//gm,
-      '<span class="comment">/*$1*/</span>',
+      /\/\/(.*)/g,
+      '<span class="comment">//$1</span>',
     );
     text = text.replace(
-      /\/\%((.|[\r\n])*)?\%\//gm,
-      '<span class="comment">/%$1%/</span>',
+      /(stop|else|endif)/g,
+      '<p class="keyword">$1</p>'
+    );
+    text = text.replace(
+      /(set|declare|if|elseif|jump)(\s+)/g,
+      '<p class="keyword">$1$2</p>'
+    );
+    text = text.replace(
+      /(\$\w*)/g,
+      '<p class="variable">$1</p>'
     );
 
-    // create a temporary document and remove all styles inside comments
-    var div = $('<div>');
-    div[0].innerHTML = text;
-    div.find('.comment').each(function() {
-      $(this)
-        .find('p')
-        .each(function() {
-          $(this).removeClass();
-        });
-    });
 
-    // unhighlight links that don't exist
-    div.find('.linkname').each(function() {
-      var name = $(this).text();
-      var found = false;
-      for (var i in self.nodes()) {
-        if (
-          self
-            .nodes()
-            [i].title()
-            .toLowerCase() == name.toLowerCase()
-        ) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) $(this).removeClass('linkname');
-    });
+    // // unhighlight links that don't exist
+    // div.find('.linkname').each(function() {
+    //   var name = $(this).text();
+    //   var found = false;
+    //   for (var i in self.nodes()) {
+    //     if (
+    //       self
+    //         .nodes()
+    //         [i].title()
+    //         .toLowerCase() == name.toLowerCase()
+    //     ) {
+    //       found = true;
+    //       break;
+    //     }
+    //   }
+    //   if (!found) $(this).removeClass('linkname');
+    // });
 
-    text = div[0].innerHTML;
+    //text = div[0].innerHTML;
     return text;
   };
 

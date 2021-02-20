@@ -3,6 +3,7 @@ const nativeImage = electron.nativeImage;
 const ipcMain = electron.ipcMain;
 const { dialog } = electron;
 const isDev = require("electron-is").dev();
+const globalShortcut = electron.globalShortcut;
 
 // Module to control application life.
 const app = electron.app;
@@ -57,6 +58,10 @@ function createWindow() {
     mainWindow.webContents.send("initiate", yarnVersion);
     mainWindow.show();
     mainWindow.maximize();
+
+    globalShortcut.register('CommandOrControl+Shift+I', () => {
+      mainWindow.webContents.openDevTools();
+    })
   });
 
   ipcMain.on("openFile", (event, operation) => {

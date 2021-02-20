@@ -261,7 +261,7 @@ input[type='checkbox'] {
   font-size: 0.8em;
   overflow: hidden;
   font-family: yarnFont;
-  color: #666;
+  color: #4d4d4c;
   line-height: 1.3em;
 }
 
@@ -564,7 +564,7 @@ input[type='checkbox'] {
   box-sizing: border-box;
   width: 100%;
   font-size: 1.2em;
-  color: #666;
+  color: #4d4d4c;
   padding: 10px 0px 10px 0px;
   margin-bottom: 5px;
   border: none;
@@ -657,7 +657,7 @@ input#editorTitle {
 }
 
 .title-error {
-  color: red;
+  color: red !important;
 }
 
 .menu:hover .title {
@@ -729,7 +729,7 @@ input#editorTitle {
   padding: 0;
   margin: 0;
   line-height: 1.5em;
-  color: #666;
+  color: #4d4d4c;
   font-family: yarnFont;
 }
 
@@ -752,7 +752,7 @@ input#editorTitle {
   box-sizing: border-box;
   font-size: 0.9em;
   line-height: 1.5em;
-  color: #666;
+  color: #4d4d4c;
   font-family: yarnFont;
   cursor: pointer;
   height: 100%;
@@ -844,24 +844,35 @@ input#editorTitle {
   padding: 0;
 }
 
-.linkname {
-  color: #3ecfe9;
+.variable {
+  color: #c82829;
 }
 
-.linkbounds {
-  color: #0ec0e0;
+.hashtag {
+  color: #de935f;
 }
 
-.condition {
-  color: #e93ecf;
+.keyword {
+  color: #8959a8;
+  font-weight: bold;
 }
 
-.conditionbounds {
-  color: #e00ec0;
+.command_tag {
+  color: #4d4d4c;
+  font-weight: bold;
+}
+
+.expression_tag {
+  color: #4d4d4c;
+  font-weight: bold;
 }
 
 .comment {
-  color: #44fe66;
+  color: #8e908c;
+}
+
+.string {
+  color: #718c00;
 }
 
 /* --- NODE DELETE --- */

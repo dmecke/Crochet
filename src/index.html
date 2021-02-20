@@ -201,16 +201,16 @@
     <div id="node-editor" class="node-editor">
 
       <div id="editor-form" class="form">
-        <input type="text" id="editorTitle" class="title" oninput="app.validateTitle()" data-bind="value: app.editing().title;" onfocus="app.togglePreviewMode(true)" placeholder="Title">
-        <input type="text" id="editorTags" data-bind="value: app.editing().tags;" onfocus="app.togglePreviewMode(true)" placeholder="Header Tags (tagName:tagContent, space separated)">
+        <input type="text" id="editorTitle" class="title" oninput="app.validateTitle()" data-bind="value: app.editing().title;" placeholder="Title" spellcheck="false">
+        <input type="text" id="editorTags" oninput="app.validateTags()" data-bind="value: app.editing().tags;" placeholder="Header Tags (tagName:tagContent, space separated)" spellcheck="false">
 
         <div class="bbcode-toolbar">
-          <button class="bbcode-button" onclick="app.openLastEditedNode()" title="Go Back To Last Edited Node" onfocus="app.togglePreviewMode(false)">
+          <!-- <button class="bbcode-button" onclick="app.openLastEditedNode()" title="Go Back To Last Edited Node">
             <svg class="icon icon-arrow-left icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-arrow-left"></use></svg>
           </button>
           <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
-          <span class="hide-when-narrow">&nbsp;</span>
+          <span class="hide-when-narrow">&nbsp;</span> -->
           <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('b')" title="Bold">
             <svg class="icon icon-bold icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-bold"></use></svg>
           </button>
@@ -309,11 +309,11 @@
         </div>
 
         <div class="editor-container">
-          <div class="editor-preview" id="editor-preview" onclick="app.togglePreviewMode(false)"></div>
+          <!-- <div class="editor-preview" id="editor-preview" onclick="app.togglePreviewMode(false)"></div>
           <div class="editor-play" id="editor-play" onpointerdown="app.advanceStoryPlayMode(30)" ondblclick="app.advanceStoryPlayMode()">
             <p class="story-playtest-answer" id="NVrichTextLabel"></p>
             <div id="commandDebugLabel"></div>
-          </div>
+          </div> -->
           <div class="editor" id="editor" data-bind="
                 ace: app.editing().body,
                 aceOptions: { mode: 'yarn', theme: 'yarn', showPrintMargin: false,
