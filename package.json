@@ -27,7 +27,6 @@
     "update-version": "node ./scripts/copy-version.js --update"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
     "ace-builds": "^1.4.5",
     "bbcode": "^0.1.5",
     "bondage": "^2.0.1",
@@ -71,7 +70,6 @@
     "exports-loader": "^0.7.0",
     "file-loader": "^4.0.0",
     "gh-pages": "^2.0.1",
-    "glob": "^7.1.4",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "husky": "^2.7.0",
     "image-webpack-loader": "^5.0.0",
