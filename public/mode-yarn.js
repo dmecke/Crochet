@@ -18,45 +18,120 @@ define('ace/mode/yarn', [
     this.$rules = {
       start: [
         {
+          token: 'hashtag',
+          regex: '#([^\/\/]+)'
+        },
+        {
           token: 'comment',
-          regex: '^\\/\\/.*$'
+          regex: '\/\/.*$'
         },
         {
-          token: 'paren.lcomm',
+          token: 'command_open',
           regex: '<<',
-          next: 'comm'
+          next: 'command'
         },
         {
-          token: 'paren.llink',
-          regex: '\\[\\[',
-          next: 'link'
+          token: 'expression_open',
+          regex: '\\{',
+          next: 'expression'
+        },
+        {
+          token: 'shortcut',
+          regex: '->\\s'
+        },
+        {
+          token: 'nametag',
+          regex: '.+\\S(?=:)'
         }
       ],
-      link: [
+      expression: [
         {
-          token: 'string.rlink',
-          regex: '\\|\\w*[a-zA-Z0-9 ]+'
+          token: 'comment',
+          regex: '\/\/.*$'
         },
         {
-          token: 'string.llink',
-          regex: '[a-zA-Z0-9 ]+'
+          token: 'variable',
+          regex: '\\$\\w*'
         },
         {
-          token: 'paren.rlink',
-          regex: '\\]\\]',
+          token: 'expression_close',
+          regex: '\\}',
           next: 'start'
         }
       ],
-      comm: [
+      command: [
         {
-          token: 'string.comm',
-          regex: '[A-Za-z0-9 _.,!:\'\'/$ ]+'
+          token: 'comment',
+          regex: '\/\/.*$'
         },
         {
-          token: 'paren.rcomm',
+          token: 'keyword',
+          regex: '(set|declare|if|elseif)\\s+',
+        },
+        {
+          token: 'keyword',
+          regex: '(stop|else|endif)',
+        },
+        {
+          token: 'keyword',
+          regex: 'jump\\s+',
+          next: 'jump'
+        },
+        {
+          token: 'function',
+          regex: '(?<=^[<<]*)\\w+'
+        },
+        {
+          token: 'string',
+          regex: '"[^"\\\r\n]*(?:\\.[^"\\\r\n]*)*"'
+        },
+        {
+          token: 'variable',
+          regex: '\\$\\w*'
+        },
+        {
+          token: 'numeric',
+          regex: '((\\b[0-9]+)?\\.)?[0-9]+\\b'
+        },
+        {
+          token: 'boolean',
+          regex: '(true|false)'
+        },
+        {
+          token: 'command_close',
           regex: '>>',
           next: 'start'
+        },
+        {
+          token: 'expression_open',
+          regex: '\\{',
+          next: 'expression'
+        },
+        {
+          token: 'expression_close',
+          regex: '\\}'
         }
+      ],
+      jump: [
+        {
+          token: 'comment',
+          regex: '\/\/.*$'
+        },
+        {
+          token: function(value) {
+            if (app.getOtherNodeTitles().includes(value.replace(/[ >>]+/g, ''))) {
+              return 'node_name'
+            } else {
+              return 'yarn'
+            }
+          },
+          regex: '[^ >>]+'
+        },
+        {
+          token: 'command_close',
+          regex: '>>',
+          next: 'start'
+        },
       ]
     };
   };
@@ -117,29 +192,31 @@ define('ace/mode/yarn', [
             name: 'Paste',
             icon: 'paste',
             callback: () => app.data.triggerPasteClipboard()
-          },
-          sep1: '---------'
+          }
         };
         // add menu option to go to selected node if an option is selected
-        if (app.getTagBeforeCursor().match(/\|/g)) {
-          options.items['go to node'] = {
-            name: 'Edit node: ' + app.editor.getSelectedText(),
-            callback: () => {
-              const title = app.getFutureEditedNodeTitle();
-              // We add the node to visited nodes history before navigating to the next node
-              if (!app.nodeVisitHistory.includes(title)) {
-                app.nodeVisitHistory.push(title);
-              }
-              app.openNodeByTitle(app.editor.getSelectedText());
-            }
-          };
-        }
+        // FIXME: ADD ABILITY TO HIGHLIGHT NODES AND EDIT THEM FROM CONTEXT MENU FOR YARN 2.0 SPEC
+        // if (app.getTagBeforeCursor().match(/\|/g)) {
+        //   options.items.sep1 = '---------';
+        //   options.items['go to node'] = {
+        //     name: 'Edit node: ' + app.editor.getSelectedText(),
+        //     callback: () => {
+        //       const title = app.getFutureEditedNodeTitle();
+        //       // We add the node to visited nodes history before navigating to the next node
+        //       if (!app.nodeVisitHistory.includes(title)) {
+        //         app.nodeVisitHistory.push(title);
+        //       }
+        //       app.openNodeByTitle(app.editor.getSelectedText());
+        //     }
+        //   };
+        // }
         // suggest word corrections if the selected word is misspelled
         if (app.settings.spellcheckEnabled()) {
           var suggestedCorrections = app.getSpellCheckSuggestionItems();
           if (suggestedCorrections !== false) {
+            options.items.sep1 = '---------';
             options.items.corrections = {
-              name: 'Correct word',
+              name: 'Suggested Corrections',
               items: suggestedCorrections
             };
           }
@@ -147,8 +224,9 @@ define('ace/mode/yarn', [
         // suggest similar words - thesaurus.com sysnonyms and anthonyms
         var suggested = app.getThesaurusItems();
         if (suggested !== false) {
+          options.items.sep1 = '---------';
           options.items.corrections = {
-            name: 'Related words',
+            name: 'Related Words',
             items: suggested
           };
         }
@@ -163,6 +241,7 @@ define('ace/mode/yarn', [
       }
       // add option to add path of local image file between img tags
       if (app.getTagBeforeCursor().match(/\[img/g)) {
+        options.items.sep1 = '---------';
         options.items['Choose image'] = {
           name: 'Choose image',
           callback: () => {
@@ -176,7 +255,8 @@ define('ace/mode/yarn', [
 
   /// Enable autocompletion via word guessing
   app.editor.setOptions({
-    enableBasicAutocompletion: app.settings.completeWordsEnabled(),
-    enableLiveAutocompletion: app.settings.completeWordsEnabled()
+    enableBasicAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
+    enableLiveAutocompletion: app.settings.autocompleteSuggestionsEnabled(),
+    behavioursEnabled: app.settings.autoCloseBrackets()
   });
 });

@@ -9,47 +9,61 @@ color: #AAA;\
 }\
 .ace-yarn  {\
 background: #fff;\
-color: #000;\
+color: #4d4d4c;\
 }\
 .ace-yarn .ace_comment {\
-color: #00c171;\
-font-style: italic;\
+color: #8e908c;\
 }\
-.ace-yarn .ace_variable.ace_language  {\
-color: #0086B3;\
+.ace-yarn .ace_hashtag {\
+color: #de935f;\
 }\
-.ace-yarn .ace_paren {\
+.ace-yarn .ace_keyword {\
+color: #8959a8;\
 font-weight: bold;\
 }\
-.ace-yarn .ace_string.ace_llink {\
-color: #000;\
+.ace-yarn .ace_variable {\
+color: #c82829;\
 }\
-.ace-yarn .ace_string.ace_rlink {\
-color: #3ecfe9;\
+.ace-yarn .ace_function {\
+color: #4271ae;\
 }\
-.ace-yarn .ace_string.ace_comm {\
-color: #e93ecf;\
+.ace-yarn .ace_numeric {\
+color: #f5871f;\
 }\
-.ace-yarn .ace_paren.ace_lcomm, .ace-yarn .ace_paren.ace_rcomm {\
-color: #e00ec0;\
+.ace-yarn .ace_boolean {\
+color: #f5871f;\
 }\
-.ace-yarn .ace_paren.ace_llink, .ace-yarn .ace_paren.ace_rlink {\
-color: #0ec0e0;\
+.ace-yarn .ace_shortcut {\
+color: #3e999f;\
+}\
+.ace-yarn .ace_string {\
+color: #718c00;\
+}\
+.ace-yarn .ace_nametag {\
+color: #3e999f;\
+}\
+.ace-yarn .ace_node_name {\
+color: #c82829;\
+}\
+.ace-yarn .ace_command_open, .ace-yarn .ace_command_close {\
+color: #4d4d4c;\
+font-weight: bold;\
+}\
+.ace-yarn .ace_expression_open, .ace-yarn .ace_expression_close {\
+color: #4d4d4c;\
+font-weight: bold;\
 }\
 .ace-yarn .ace_variable.ace_instance {\
 color: teal;\
-}\
-.ace-yarn .ace_constant.ace_language {\
-font-weight: bold;\
 }\
 .ace-yarn .ace_cursor {\
 color: black;\
 }\
 .ace-yarn .ace_marker-layer .ace_active-line {\
-background: rgb(255, 255, 204);\
+background: #efefef;\
 }\
 .ace-yarn .ace_marker-layer .ace_selection {\
-background: rgb(181, 213, 255);\
+background: #d6d6d6;\
 }\
 .ace-yarn.ace_multiselect .ace_selection.ace_start {\
 box-shadow: 0 0 3px 0px white;\
