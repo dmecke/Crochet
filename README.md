@@ -1,5 +1,5 @@
 <p align="center">
-	<img align="center" src="doc/Crochet_Banner.png">
+	<img align="center" src="doc/Crochet_Banner_Update.png">
 </p>
 <h1 align="center">v0.1.0 (ALPHA)</h1>
 
