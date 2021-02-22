@@ -1084,10 +1084,6 @@ input:focus + span + .dropdown {
   font-weight: bold;
 }
 
-.app-version::before {
-  content: 'Version ';
-}
-
 .menu-icon {
   color: black;
 }

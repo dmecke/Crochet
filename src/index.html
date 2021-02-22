@@ -168,6 +168,15 @@
           </span>
         </div>
       </div> <!-- export menu -->
+      <!-- help menu -->
+      <div class="menu">
+        <span class="title">Help</span>
+        <div class="dropdown">
+          <span id="aboutDialog" class="item" data-bind="click: app.showAboutDialog">
+            About
+          </span>
+        </div>
+      </div> <!-- export menu -->
     </div> <!-- app-menu -->
 
     <!-- grid bg for snap to grid functionality -->
@@ -220,7 +229,7 @@
           <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('u')" title="Underlined">
             <svg class="icon icon-underline icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-underline"></use></svg>
           </button>
-          <span class="hide-when-narrow">&nbsp;</span>
+          <!-- <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
           <span class="hide-when-narrow">&nbsp;</span>
           <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('cmd')" title="Command">
@@ -228,8 +237,8 @@
           </button>
           <button class="bbcode-button hide-when-narrow" onclick="app.richTextFormatter.insertTag('opt')" title="Choice/Link">
             <svg class="icon icon-link icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-link"></use></svg>
-          </button>
-          <span class="hide-when-narrow">&nbsp;</span>
+          </button> -->
+          <!-- <span class="hide-when-narrow">&nbsp;</span>
           <span class="hide-when-narrow bbcode-button-separator">||</span>
           <span class="hide-when-narrow">&nbsp;</span>
           <button class="bbcode-button" onclick="app.richTextFormatter.insertTag('img')" title="Image">
@@ -240,7 +249,7 @@
           </button>
           <button class="bbcode-button hide-when-narrow" onclick="app.insertEmoji()" title="Emoji">
             <svg class="icon icon-sweat-emoji icon-lg icon-fw"><use xlink:href="public/icons.svg#icon-sweat-emoji"></use></svg>
-          </button>
+          </button> -->
 
           <!-- ko if:app.usingVisualStudioCodeExtension() -->
           <button class="bbcode-button" id="edit-node-in-vscode" onclick="app.editNodeInVisualStudioCodeEditor(app.editing())">🛠️ Edit in Visual Studio Code Text Editor</button>
@@ -374,12 +383,12 @@
     <!-- /ko -->
 
     <!-- app info -->
-    <div class="app-info">
+    <!-- <div class="app-info">
       <span class="app-title" data-bind="text:app.name"></span>
       <span class="app-version" data-bind="text:app.version"></span>
       <span class="file-name" data-bind="text:data.editingName"></span>
-    </div>
-    <div class="title" id="addPwa">Add to Homescreen</div>
+    </div> -->
+    <div class="title" id="addPwa">Install Web App</div>
 
     <!-- marquee -->
     <div id="marquee"></div>

@@ -21,3 +21,7 @@ editorFrameEl.src = 'app/index.html';
 window.addEventListener('yarnLoadedData', (e) => {
   // yarnWindow.setTitle(e.data.editingPath());
 });
+
+window.addEventListener('openLink', (e) => {
+  electron.shell.openExternal(e.link);
+})

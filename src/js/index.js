@@ -43,7 +43,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-window.app = new App('Crochet', version);
+window.app = new App('Crochet', 'v' + version + ' ALPHA');
 window.app.run();
 
 ko.options.foreachHidesDestroyed = true;

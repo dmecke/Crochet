@@ -263,6 +263,13 @@ export var App = function(name, version) {
       $('#emojiPicker-container').show();
     };
 
+    this.showAboutDialog = function() {
+      Swal.fire({
+        html: '<a href="https://github.com/FaultyFunctions/Crochet" target="_blank">https://github.com/FaultyFunctions/Crochet</a>',
+        imageUrl: 'public/Crochet_Banner.png'
+      })
+    }
+
     // TODO: move to editor
     this.insertColorCode = function() {
       if ($('#colorPicker-container').is(':visible')) {
@@ -563,7 +570,7 @@ export var App = function(name, version) {
   this.refreshWindowTitle = function() {
     let title = '';
     if (data.lastStorageHost() === 'LOCAL') {
-      title = 'Crochet - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
+      title = 'Crochet ' + self.version() + ' - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
     } else if (data.lastStorageHost() === 'GIST'){
       title = 'Gist - ' + (data.editingPath() || data.editingName()) + ' ' + (data.isDocumentDirty() ? '*' : '');
     }
@@ -994,7 +1001,7 @@ export var App = function(name, version) {
     });
 
     // Remove app-info while editor is open, can't see it anyway
-    $('.app-info').hide();
+    // $('.app-info').hide();
 
     self.editor.resize();
     if (node.undoManager != null) {
@@ -1447,7 +1454,7 @@ export var App = function(name, version) {
     self.isEditorSplit = false;
     self.isEditorFocused = false;
 
-    $('.app-info').show();
+    // $('.app-info').show();
 
     app.ui.resetAppButtonsLocation();
     if (self.isEditorInPlayMode) {

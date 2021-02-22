@@ -78,6 +78,15 @@ export const Input = function(app) {
       self.mouse.y = e.pageY;
     });
 
+    $(document).on('click', 'a', (e) => {
+      if (app.isElectron) {
+        e.preventDefault();
+        var event = new CustomEvent('openLink');
+        event.link = e.target.href;
+        window.parent.dispatchEvent(event);
+      }
+    })
+
     $(document).on('mousemove touchmove', e => {
       if (self.isDragging) {
         app.focusedNodeIdx = -1;
