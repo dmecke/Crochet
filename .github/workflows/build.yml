@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   update-version:
@@ -66,20 +66,20 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: pwsh
       run: |
-        echo "ARTIFACT_FILE=./electron/dist/Yarn Editor Setup ${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/Crochet Setup ${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
 
     - name: Set environment vars for Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-        echo "ARTIFACT_FILE=./electron/dist/yarn-editor_${{ steps.package-version.outputs.version }}_amd64.snap" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.${{ steps.package-version.outputs.version }}.snap" >> $GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/crochet_${{ steps.package-version.outputs.version }}_amd64.snap" >> $GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.snap" >> $GITHUB_ENV
 
     - name: Set environment vars for Mac
       if: matrix.os == 'macos-latest'
       run: |
-        echo "ARTIFACT_FILE=./electron/dist/Yarn Editor-${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/Crochet-${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
 
     - name: npm install and build
       run: cd electron && yarn install && yarn run ${{ matrix.build-task }}

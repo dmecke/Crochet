@@ -35,20 +35,20 @@ jobs:
 
         echo "RELEASE_TAG=$($env:RELEASE_TAG)" >> $env:GITHUB_ENV
         echo "RELEASE_VERSION=$($env:RELEASE_VERSION)" >> $env:GITHUB_ENV
-        echo "ARTIFACT_FILE=./electron/dist/Yarn Editor Setup $($env:RELEASE_VERSION).exe" >> $env:GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.$($env:RELEASE_VERSION).exe" >> $env:GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/Crochet Setup $($env:RELEASE_VERSION).exe" >> $env:GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.$($env:RELEASE_VERSION).exe" >> $env:GITHUB_ENV
 
     - name: Set environment vars for Linux
       if: matrix.os == 'ubuntu-latest'
       run: |
-        echo "ARTIFACT_FILE=./electron/dist/yarn-editor_${{ env.RELEASE_VERSION }}_amd64.snap" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.${{ env.RELEASE_VERSION }}.snap" >> $GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/crochet_${{ env.RELEASE_VERSION }}_amd64.snap" >> $GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.${{ env.RELEASE_VERSION }}.snap" >> $GITHUB_ENV
 
     - name: Set environment vars for Mac
       if: matrix.os == 'macos-latest'
       run: |
-        echo "ARTIFACT_FILE=./electron/dist/Yarn Editor-${{ env.RELEASE_VERSION }}.dmg" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Yarn.Editor.Setup.${{ env.RELEASE_VERSION }}.dmg" >> $GITHUB_ENV
+        echo "ARTIFACT_FILE=./electron/dist/Crochet-${{ env.RELEASE_VERSION }}.dmg" >> $GITHUB_ENV
+        echo "ARTIFACT_NAME=Crochet.Setup.${{ env.RELEASE_VERSION }}.dmg" >> $GITHUB_ENV
 
     - name: Checkout repository
       uses: actions/checkout@v2
