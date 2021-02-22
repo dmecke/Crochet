@@ -265,6 +265,7 @@ export var App = function(name, version) {
 
     this.showAboutDialog = function() {
       Swal.fire({
+        title: self.version(),
         html: '<a href="https://github.com/FaultyFunctions/Crochet" target="_blank">https://github.com/FaultyFunctions/Crochet</a>',
         imageUrl: 'public/Crochet_Banner.png'
       })
