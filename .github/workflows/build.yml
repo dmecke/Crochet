@@ -84,7 +84,7 @@ jobs:
     - name: npm install and build
       run: cd electron && yarn install && yarn run ${{ matrix.build-task }}
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v1
@@ -92,4 +92,4 @@ jobs:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.ARTIFACT_FILE }}
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
