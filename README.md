@@ -8,7 +8,7 @@ Crochet is a node-based dialogue editor forked from [YarnEditor](https://github.
 The 2.0 specification is currently in flux, which means that Crochet is also in flux and will remain in an alpha state until the specification is pinned down. You can read more about the new specification and keep up to date [here](https://github.com/YarnSpinnerTool/YarnSpinner/blob/yarn-spec/Documentation/Yarn-Spec.md) and [here](https://github.com/YarnSpinnerTool/YarnSpinner/pull/285).
 
 <p align="center">
-	<img src="doc/Crochet_App.png">
+	<img src="doc/Crochet_App_Image.png">
 </p>
 
 # Desktop App
