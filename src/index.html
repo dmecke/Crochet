@@ -536,8 +536,9 @@
               <input id="gridSize" type="number" min="0" step="1" placeholder="20 - 200 (Default: 40)" data-bind="value: app.settings.gridSize, event: { change: app.settings.validateGridSize }">
             </div>
 
+            <!-- Arrow Style -->
             <div class="settings-item">
-              <label class="settings-label" for="line-style"><svg class="icon icon-bezier icon-fw icon-lg settings-icon"><use xlink:href="public/icons.svg#icon-bezier"></use></svg> Line Link Style</label>
+              <label class="settings-label" for="line-style"><svg class="icon icon-bezier icon-fw icon-lg settings-icon"><use xlink:href="public/icons.svg#icon-bezier"></use></svg> Arrow Style</label>
               <select id="line-style" class="settings-value" data-bind="
                 options: app.ui.availableLineStyles,
                 optionsText: 'name',
@@ -545,6 +546,12 @@
                 value: app.settings.lineStyle,
                 event: { change: app.workspace.updateArrows }">
               </select>
+            </div>
+
+            <!-- Right Click Node Creation -->
+            <div class="settings-item">
+              <label class="settings-label" for="rightClickNodeCreation"><svg class="icon icon-mouse icon-fw icon-lg settings-icon"><use xlink:href="public/icons.svg#icon-mouse"></use></svg> Right Click Node Creation</label>
+              <input id="rightClickNodeCreation" type="checkbox" checked="true" data-bind="checked: app.settings.rightClickNodeCreation">
             </div>
           </div> <!-- settgins-column -->
         </div> <!-- settgins-row -->

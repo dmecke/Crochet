@@ -155,6 +155,13 @@ export const Settings = function(app) {
   .observable(storage.getItem('lineStyle') || 'straight')
   .extend({ persist:'lineStyle' });
 
+  // Right Click Node Creation
+  this.rightClickNodeCreation = ko
+    .observable(storage.getItem('rightClickNodeCreation') !== null ?
+    storage.getItem('rightClickNodeCreation') === 'true' :
+    true
+    ).extend({ persist: 'rightClickNodeCreation' });
+
   // Always open nodes in Visual Studio Code Editor
   // We don't actually show this in the settings menu; it can only be set by the VSCode extension's settings
   this.alwaysOpenNodesInVisualStudioCodeEditor = ko

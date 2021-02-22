@@ -147,9 +147,9 @@ export const Input = function(app) {
         return;
 
       const canSpawn =
-        $(e.target).hasClass('nodes') || $(e.target).parents('.nodes').length;
+        $(e.target).hasClass('nodes')
 
-      if (e.button === MouseButton.Right && canSpawn) {
+      if (e.button === MouseButton.Right && canSpawn && app.settings.rightClickNodeCreation()) {
         const {x, y} = app.workspace.toWorkspaceCoordinates(e.pageX, e.pageY);
         app.newNodeAt(x, y);
       }
