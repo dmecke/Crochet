@@ -403,7 +403,7 @@
           <div class="settings-column">
             <!-- Language -->
             <div class="settings-item">
-              <label class="settings-label" for="language">Story Language</label>
+              <label class="settings-label" for="language">Preferred Language</label>
               <select id="language" class="settings-value" data-bind="
                 options: app.ui.availableLanguages,
                 optionsText: 'name',
@@ -471,7 +471,7 @@
 
             <!-- Throttle delay -->
             <div class="settings-item">
-              <label class="settings-label" for="throttle-threshold">Redraw Delay</label>
+              <label class="settings-label" for="throttle-threshold">Arrow Update Rate</label>
               <div class="slidecontainer settings-value">
                 <input type="range" class="slider settings-value" min="16" max="250" data-bind="value: app.settings.redrawThrottle, event: { change: app.workspace.setThrottle }">
               </div>
