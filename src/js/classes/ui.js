@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { data } from "synonyms/dictionary";
 
 export const UI = function(app) {
   const self = this;

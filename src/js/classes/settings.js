@@ -29,7 +29,6 @@ export const Settings = function(app) {
   // Applies the current settings
   this.apply = function () {
     app.setTheme(self.theme());
-    app.setLanguage(self.language());
     app.toggleInvertColors();
     app.setMarkupLanguage(self.markupLanguage());
     app.workspace.setThrottle(self.redrawThrottle());
