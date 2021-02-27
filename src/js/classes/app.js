@@ -223,6 +223,11 @@ export var App = function(name, version) {
 
     self.settings.apply();
 
+    // Load Language
+    setTimeout(() => {
+      self.setLanguage(self.settings.language());
+    }, 250);
+
     // search field enter
     $('.search-title input').click(self.updateSearch);
     $('.search-body input').click(self.updateSearch);
