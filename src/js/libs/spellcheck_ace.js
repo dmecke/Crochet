@@ -33,37 +33,67 @@ function load_dictionary(dicLanguage) {
   dicPath = utils.Utils.getPublicPath(`dictionaries/${dicLanguage}/index.dic`);
   affPath = utils.Utils.getPublicPath(`dictionaries/${dicLanguage}/index.aff`);
 
-  $.get(dicPath, function(data) {
-    dicData = data;
-  })
-    .fail(function() {
-      console.error(
-        `${dicLanguage} not found locally. Loading dictionary from server instead...`
-      );
-      dicPath = `https://raw.githubusercontent.com/wooorm/dictionaries/master/dictionaries/${dicLanguage}/index.dic`;
-      affPath = `https://raw.githubusercontent.com/wooorm/dictionaries/master/dictionaries/${dicLanguage}/index.aff`;
+  Swal.close();
+  Swal.fire({
+    title: 'Loading Language...',
+    text: 'Please Wait',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    allowEnterKey: false,
+    backdrop: true
+  });
+  Swal.showLoading();
 
-      $.get(dicPath, function(data) {
-        dicData = data;
-      }).done(function() {
-        $.get(affPath, function(data) {
-          affData = data;
-        }).done(function() {
-          console.log('Dictionary loaded from server');
-          dictionary = new nspell(affData, dicData);
-          contents_modified = true;
-        });
-      });
+  setTimeout(() => {
+    $.get(dicPath, function(data) {
+      dicData = data;
     })
+    // .fail(function() {
+    //   console.error(
+    //     `${dicLanguage} not found locally. Loading dictionary from server instead...`
+    //   );
+    //   dicPath = `https://raw.githubusercontent.com/wooorm/dictionaries/master/dictionaries/${dicLanguage}/index.dic`;
+    //   affPath = `https://raw.githubusercontent.com/wooorm/dictionaries/master/dictionaries/${dicLanguage}/index.aff`;
+  
+    //   $.get(dicPath, function(data) {
+    //     dicData = data;
+    //   }).done(function() {
+    //     Swal.fire({
+    //       title: 'Loading...',
+    //       text: 'Please Wait'
+    //     });
+    //     Swal.showLoading();
+    //     $.get(affPath, function(data) {
+    //       affData = data;
+    //     }).done(function() {
+    //       console.log('Dictionary loaded from server');
+    //       dictionary = new nspell(affData, dicData);
+    //       contents_modified = true;
+    //       app.ui.notification.fire({
+    //         title: 'Language Loaded!',
+    //         icon: 'success'
+    //       });
+    //     });
+    //   });
+    // })
     .done(function() {
       $.get(affPath, function(data) {
         affData = data;
       }).done(function() {
-        console.log('Dictionary loaded locally');
         dictionary = new nspell(affData, dicData);
+        console.log('Dictionary loaded locally');
+        Swal.close();
+        app.ui.notification.fire({
+          title: 'Language Loaded!',
+          icon: 'success'
+        });
         contents_modified = true;
+        if (app.editing() !== null && app.settings.spellcheckEnabled()) {
+          spell_check();
+        }
       });
     });
+  }, 100);
 }
 exports.load_dictionary = load_dictionary;
 

@@ -401,18 +401,6 @@
         <h3>Preferences</h3>
         <div class="settings-row">
           <div class="settings-column">
-            <!-- Language -->
-            <div class="settings-item">
-              <label class="settings-label" for="language">Preferred Language</label>
-              <select id="language" class="settings-value" data-bind="
-                options: app.ui.availableLanguages,
-                optionsText: 'name',
-                optionsValue: 'id',
-                value: app.settings.language,
-                event: { change: app.setLanguage }">
-              </select>
-            </div>
-
             <!-- Theme -->
             <div class="settings-item">
               <label class="settings-label" for="theme">Theme</label>
@@ -503,6 +491,18 @@
             <div class="settings-item">
               <label class="settings-label" for="spellcheck"><svg class="icon icon-spell-check icon-fw icon-lg settings-icon"><use xlink:href="public/icons.svg#icon-spell-check"></use></svg> Spell Check</label>
               <input id="spellcheck" type="checkbox" data-bind="checked: app.settings.spellcheckEnabled">
+            </div>
+
+            <!-- Language -->
+            <div class="settings-item">
+              <label class="settings-label" for="language"><svg class="icon icon-language icon-fw icon-lg settings-icon"><use xlink:href="public/icons.svg#icon-language"></use></svg> Spell Check Language</label>
+              <select id="language" class="settings-value" data-bind="
+                options: app.ui.availableLanguages,
+                optionsText: 'name',
+                optionsValue: 'id',
+                value: app.settings.language,
+                event: { change: app.setLanguage }">
+              </select>
             </div>
 
             <!-- Autocomplete Suggestions -->
