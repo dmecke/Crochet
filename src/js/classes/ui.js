@@ -53,7 +53,6 @@ export const UI = function(app) {
     { name: 'English', id: 'en-GB' },
     { name: 'Español', id: 'es-ES' },
     { name: 'Français', id: 'fr-FR' },
-    { name: 'Íslenska', id: 'is-IS' },
     { name: 'Nederlands', id: 'nl-NL' },
     { name: 'Norsk bokmål', id: 'nb-NO' },
     { name: 'Polski', id: 'pl-PL' },
