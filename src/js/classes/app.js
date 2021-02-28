@@ -563,6 +563,7 @@ export var App = function(name, version) {
       editorTitle.removeAttr('title');
       editorTitle.removeClass('title-error');
       editorTitle.off('focusout');
+      self.updateNodeLinks();
     }
   };
 

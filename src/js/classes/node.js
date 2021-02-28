@@ -354,8 +354,8 @@ export let Node = function(options = {}) {
       const parentLinks = self.getLinksInNode(parent);
       if (parentLinks) {
         if (parentLinks.includes(self.oldTitle)) {
-          const re = RegExp('\\|\\s*' + self.oldTitle + '\\s*\\]\\]', 'g');
-          const newBody = parent.body().replace(re, '|' + self.title() + ']]');
+          const re = RegExp('<<jump\\s+' + self.oldTitle + '\\s*>>', 'g');
+          const newBody = parent.body().replace(re, '<<jump ' + self.title() + '>>');
           parent.body(newBody);
           self.linkedFrom.push(parent);
         }
