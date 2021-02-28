@@ -57,9 +57,9 @@ export const Settings = function(app) {
     .extend({ persist: 'editorFontSize'});
 
   // Language
-  this.language = ko
-    .observable(storage.getItem('language') || 'en-GB')
-    .extend({ persist:'language' });
+  this.spellCheckLanguage = ko
+    .observable(storage.getItem('spellCheckLanguage') || 'en-GB')
+    .extend({ persist:'spellCheckLanguage' });
 
   // Redraw throttle
   this.redrawThrottle = ko

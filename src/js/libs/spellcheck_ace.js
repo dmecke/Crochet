@@ -38,7 +38,6 @@ function load_dictionary(dicLanguage) {
     title: 'Loading Language...',
     text: 'Please Wait',
     allowOutsideClick: false,
-    allowEscapeKey: false,
     allowEnterKey: false,
     backdrop: true
   });

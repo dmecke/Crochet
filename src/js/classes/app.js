@@ -42,7 +42,7 @@ export var App = function(name, version) {
   this.setLanguage = function(language, e) {
     const languageId = e ? e.target.value : language;
     spoken.recognition.lang = languageId;
-    load_dictionary(self.settings.language().split('-')[0]);
+    load_dictionary(self.settings.spellCheckLanguage().split('-')[0]);
   };
 
   this.setMarkupLanguage = function(language, e) {
@@ -225,7 +225,7 @@ export var App = function(name, version) {
 
     // Load Language
     setTimeout(() => {
-      self.setLanguage(self.settings.language());
+      self.setLanguage(self.settings.spellCheckLanguage());
     }, 250);
 
     // search field enter
@@ -330,7 +330,7 @@ export var App = function(name, version) {
         : self.editor.getSession().getValue();
 
       spoken.voices().then((countries) => {
-        const lookUp = self.settings.language().split('-')[0];
+        const lookUp = self.settings.spellCheckLanguage().split('-')[0];
         const voices = countries.filter((v) => !v.lang.indexOf(lookUp));
 
         if (voices.length) {
