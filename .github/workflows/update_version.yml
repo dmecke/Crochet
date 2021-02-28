@@ -2,6 +2,7 @@ name: Update_Version
 
 on: [workflow_dispatch]
   
+jobs:
   update-version:
     name: Update version
     runs-on: ubuntu-latest
