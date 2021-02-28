@@ -1529,8 +1529,8 @@ export var App = function(name, version) {
   };
 
   this.trimBodyLinks = function(body) {
-    var re = /\[\[(.+?)\|\s*(.+?)\s*\]\]/g;
-    return body.replace(re, '[[$1|$2]]');
+    var re = /<<jump\s+(.+?)\s*>>/g;
+    return body.replace(re, '<<jump $1>>');
   };
 
   this.updateNodeLinks = function() {
