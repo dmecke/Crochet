@@ -58,6 +58,13 @@ A Yarn implementation for GameMaker Studio 2.3+ created by [JuJuAdams](http://ww
 
 If you are working on an implementation/runtime and you'd like to be added to this list just open an issue and I'll get it added!
 
+# Roadmap
+This is just a rough idea of what I want to implement in the future. No dates provided, since I work sporadically.
+- Canvas labels to better organize and find relevant story sections at a glance within your yarn file.
+- Custom markup editing. This will allow uses to implement their own markup buttons in the editor.
+- Better file handling.
+- Improvements to autocomplete suggestions.
+
 # Running From Source
 Install [Node.js](https://nodejs.org/en/), clone the repo, then:
 ## Web App
