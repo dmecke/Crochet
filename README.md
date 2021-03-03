@@ -20,7 +20,7 @@ https://faultyfunctions.github.io/Crochet/
 
 # Features
 
-## Editor Features
+### Editor
 - Spellcheck for multiple languages.
 - Spelling suggestions via the right-click context-menu.
 - Autocomplete suggestions.
@@ -31,7 +31,7 @@ https://faultyfunctions.github.io/Crochet/
 - Text-to-Speech button so you can hear text aloud.
 - Editor can be split and snapped to the left or right side of the screen so you can edit nodes and move around the workspace at the same time.
 
-## Workspace Features
+### Workspace
 - Snap to Grid functionality with adjustable grid size settings.
 - Alignment options for organizing nodes quickly.
 - Search through title, body, or tags to find the node you're looking for quickly.
@@ -41,7 +41,7 @@ https://faultyfunctions.github.io/Crochet/
 - Change a node's title background color for better organization.
 - Select and manipulate multiple nodes at the same time.
 
-## Customization
+### Customization
 - Multiple themes to choose from including [Dracula](https://draculatheme.com/).
 - Change the editor's font size between 12-24px.
 - Different arrow drawing styles.
@@ -67,13 +67,13 @@ This is just a rough idea of what I want to implement in the future. No dates pr
 
 # Running From Source
 Install [Node.js](https://nodejs.org/en/), clone the repo, then:
-## Web App
+### Web App
 ```console
 $ npm install
 $ npm start
 ```
 
-## Electron
+### Electron
 ```console
 $ cd electron
 $ npm install
@@ -82,12 +82,12 @@ $ npm start
 
 # Building From Source
 Install [Node.js](https://nodejs.org/en/), clone the repo, then:
-## Web App
+### Web App
 ```console
 $ npm install
 $ npm run build
 ```
-## Electron App
+### Electron App
 ```console
 $ cd electron
 $ npm install
