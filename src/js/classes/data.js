@@ -7,7 +7,7 @@ import { Utils, FILETYPE } from './utils';
 export const data = {
   editingPath: ko.observable(null),
   editingName: ko.observable('NewFile'),
-  editingType: ko.observable('json'),
+  editingType: ko.observable('yarn'),
   editingFolder: ko.observable(null),
   isDocumentDirty: ko.observable(false),
   fileVersion: 1,
@@ -19,7 +19,7 @@ export const data = {
       ? path.join(path.dirname(filePath), addSubPath)
       : path.dirname(filePath);
   },
-  startNewFile: function(editingName = 'NewFile', editingFormat = 'json') {
+  startNewFile: function(editingName = 'NewFile', editingFormat = 'yarn') {
     data.editingPath(null);
     data.editingName(editingName);
     data.editingType(editingFormat);
