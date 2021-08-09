@@ -1,59 +1,59 @@
 {
-  "name": "crochet",
-  "main": "main.js",
-  "version": "0.1.5",
-  "license": "MIT",
-  "author": "@FaultyFunctions",
-  "description": "An editor for Yarn files. Forked from YarnEditor.",
-  "homepage": "https://github.com/FaultyFunctions/Crochet",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FaultyFunctions/Crochet.git"
-  },
-  "bugs": {
-    "url": "https://github.com/FaultyFunctions/Crochet/issues"
-  },
-  "scripts": {
-    "build-web-app-dev": "cd .. && npm run build-dev && npm run copy-web-app",
-    "build-web-app": "cd .. && npm run build && npm run copy-web-app",
-    "start": "npm run build-web-app-dev && electron --no-sandbox .",
-    "build-linux": "npm run build-web-app && electron-builder --linux --publish never",
-    "build-windows": "npm run build-web-app && electron-builder --windows",
-    "build-mac": "npm run build-web-app && electron-builder --macos"
-  },
-  "dependencies": {
-    "dot-prop": "^4.2.1",
-    "electron-is": "^3.0.0"
-  },
-  "devDependencies": {
-    "copyfiles": "^2.1.1",
-    "electron": "^9.4.0",
-    "electron-builder": "^22.9.1"
-  },
-  "lint-staged": {
-    "package.json": [
-      "prettier-package-json --write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "build": {
-    "productName": "Crochet",
-    "files": [
-      "**/*",
-      "build/icon.*"
-    ],
-    "fileAssociations": {
-      "ext": "yarn",
-      "name": "Yarn File",
-      "role": "editor"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "./build/icon.ico"
-    }
-  }
+	"name": "crochet",
+	"main": "main.js",
+	"version": "0.1.5",
+	"license": "MIT",
+	"author": "@FaultyFunctions",
+	"description": "An editor for Yarn files. Forked from YarnEditor.",
+	"homepage": "https://github.com/FaultyFunctions/Crochet",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/FaultyFunctions/Crochet.git"
+	},
+	"bugs": {
+		"url": "https://github.com/FaultyFunctions/Crochet/issues"
+	},
+	"scripts": {
+		"build-web-app-dev": "cd .. && npm run build-dev && npm run copy-web-app",
+		"build-web-app": "cd .. && npm run build && npm run copy-web-app",
+		"start": "npm run build-web-app-dev && electron --no-sandbox .",
+		"build-linux": "npm run build-web-app && electron-builder --linux --publish never",
+		"build-windows": "npm run build-web-app && electron-builder --windows",
+		"build-mac": "npm run build-web-app && electron-builder --macos"
+	},
+	"dependencies": {
+		"dot-prop": "^4.2.1",
+		"electron-is": "^3.0.0"
+	},
+	"devDependencies": {
+		"copyfiles": "^2.1.1",
+		"electron": "^9.4.0",
+		"electron-builder": "^22.9.1"
+	},
+	"lint-staged": {
+		"package.json": [
+			"prettier-package-json --write",
+			"git add"
+		],
+		"*.js": [
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"build": {
+		"productName": "Crochet",
+		"files": [
+			"**/*",
+			"build/icon.*"
+		],
+		"fileAssociations": {
+			"ext": "yarn",
+			"name": "Yarn File",
+			"role": "editor"
+		},
+		"win": {
+			"target": "nsis",
+			"icon": "./build/icon.ico"
+		}
+	}
 }
