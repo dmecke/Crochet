@@ -1,5 +1,6 @@
 {
   "name": "crochet",
+  "version": "0.1.5",
   "description": "An editor for Yarn files. Forked from YarnEditor.",
   "license": "MIT",
   "author": "@FaultyFunctions",
@@ -11,7 +12,6 @@
   "bugs": {
     "url": "https://github.com/FaultyFunctions/Crochet/issues"
   },
-  "version": "0.1.4",
   "scripts": {
     "build": "npm run copy-version && webpack -p --progress --mode production --config webpack.config.js",
     "build-dev": "npm run copy-version && cross-env NODE_ENV=dev webpack -p --progress --config webpack.config.js",
