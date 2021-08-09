@@ -3,63 +3,63 @@ name: Build
 on: [workflow_dispatch]
 
 jobs:
-  build:
-    strategy:
-        matrix:
-          include:
-            - os: windows-latest
-              build-task: build-windows
-            - os: ubuntu-latest
-              build-task: build-linux
-            - os: macos-latest
-              build-task: build-mac
+    build:
+        strategy:
+            matrix:
+                include:
+                    - os: windows-latest
+                      build-task: build-windows
+                    - os: ubuntu-latest
+                      build-task: build-linux
+                    - os: macos-latest
+                      build-task: build-mac
 
-    name: Build for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+        name: Build for ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
 
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
+            - name: Use Node.js 12.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
 
-    - run: npm ci
+            - run: npm ci
 
-    - name: Read package.json
-      uses: tyankatsu0105/read-package-version-actions@v1
-      id: package-version
+            - name: Read package.json
+              uses: tyankatsu0105/read-package-version-actions@v1
+              id: package-version
 
-    - name: Set environment vars for Windows
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        echo "ARTIFACT_FILE=./electron/dist/Crochet Setup ${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
-        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
+            - name: Set environment vars for Windows
+              if: matrix.os == 'windows-latest'
+              shell: pwsh
+              run: |
+                  echo "ARTIFACT_FILE=./electron/dist/Crochet Setup ${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
+                  echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.exe" >> $env:GITHUB_ENV
 
-    - name: Set environment vars for Linux
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        echo "ARTIFACT_FILE=./electron/dist/crochet_${{ steps.package-version.outputs.version }}_amd64.snap" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.snap" >> $GITHUB_ENV
+            - name: Set environment vars for Linux
+              if: matrix.os == 'ubuntu-latest'
+              run: |
+                  echo "ARTIFACT_FILE=./electron/dist/crochet_${{ steps.package-version.outputs.version }}_amd64.snap" >> $GITHUB_ENV
+                  echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.snap" >> $GITHUB_ENV
 
-    - name: Set environment vars for Mac
-      if: matrix.os == 'macos-latest'
-      run: |
-        echo "ARTIFACT_FILE=./electron/dist/Crochet-${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
-        echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
+            - name: Set environment vars for Mac
+              if: matrix.os == 'macos-latest'
+              run: |
+                  echo "ARTIFACT_FILE=./electron/dist/Crochet-${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
+                  echo "ARTIFACT_NAME=Crochet.Setup.${{ steps.package-version.outputs.version }}.dmg" >> $GITHUB_ENV
 
-    - name: npm install and build
-      run: cd electron && yarn install && yarn run ${{ matrix.build-task }}
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: npm install and build
+              run: cd electron && npm install && npm run ${{ matrix.build-task }}
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: ${{ env.ARTIFACT_NAME }}
-        path: ${{ env.ARTIFACT_FILE }}
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Archive artifacts
+              uses: actions/upload-artifact@v1
+              with:
+                  name: ${{ env.ARTIFACT_NAME }}
+                  path: ${{ env.ARTIFACT_FILE }}
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
