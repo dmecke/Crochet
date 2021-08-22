@@ -31,8 +31,8 @@ export let Node = function(options = {}) {
 	this.colorID = ko.observable(options.colorID || 0);
 	this.checked = false;
 	this.selected = false;
-	this.createX = options.x === NaN ? null : options.x;
-	this.createY = options.y === NaN ? null : options.y;
+	this.createX = isNaN(options.x) ? null : options.x;
+	this.createY = isNaN(options.y) ? null : options.y;
 	this.undoManager = null;
 	// clippedTags
 	//
