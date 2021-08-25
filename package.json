@@ -1,6 +1,6 @@
 {
   "name": "crochet",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "An editor for Yarn files. Forked from YarnEditor.",
   "license": "MIT",
   "author": "@FaultyFunctions",
