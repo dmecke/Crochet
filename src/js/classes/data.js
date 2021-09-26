@@ -655,11 +655,13 @@ export const data = {
 			gists.get(gists.file).then(gist => {
 				const gistFiles = gist.body.files;
 				const inputOptions = {};
-				Object.keys(gistFiles).forEach(key => {
+				Object.keys(gistFiles).filter(file => file.endsWith('.yarn')).forEach(key => {
 					inputOptions[key] = key;
 				});
+				const invalidFiles = Object.keys(gistFiles).filter(file => !file.endsWith('.yarn'));
 				Swal.fire({
 					title: '🐙 Open file from a gist',
+					html: invalidFiles.length > 0 ? '⚠️ Only .yarn files are able to be imported. ⚠️<br />(Found ' + invalidFiles.length + ' non-yarn files.)' : '',
 					input: 'select',
 					inputOptions,
 					inputAttributes: {
